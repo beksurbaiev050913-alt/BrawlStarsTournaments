@@ -2,59 +2,48 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brawl Stars Tournaments by Beka</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Турниры от Beka 6B</title>
     <style>
-        body { background-color: #1a2a6c; color: white; font-family: 'Arial', sans-serif; }
-        .brawl-card { background: linear-gradient(145deg, #2c3e50, #000000); border: 3px solid #f1c40f; transition: 0.3s; }
-        .brawl-card:hover { transform: scale(1.05); }
-        .btn-join { background-color: #f1c40f; color: black; font-weight: bold; }
-        .btn-join:hover { background-color: #ffdb58; }
+        body { background-color: #0c1441; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .header { border-bottom: 3px solid #f1c40f; padding-bottom: 20px; margin-bottom: 20px; }
+        .warning { background: #e74c3c; padding: 15px; border-radius: 10px; margin: 20px auto; max-width: 600px; border: 2px solid white; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+        .card { background: #1e272e; border: 3px solid #f1c40f; border-radius: 15px; padding: 20px; width: 280px; transition: 0.3s; }
+        .card:hover { transform: translateY(-10px); }
+        .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; height: 150px; object-fit: cover; background: #333; }
+        button { background: #f1c40f; border: none; padding: 10px 20px; font-weight: bold; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; }
+        button:hover { background: #ffea00; }
+        h1 { margin: 10px 0; }
     </style>
 </head>
-<body class="p-4">
+<body>
 
-    <header class="text-center mb-10">
-        <img src="https://via.placeholder.com/150x80?text=Brawl+Logo" alt="Brawl Stars" class="mx-auto rounded-lg mb-4">
-        <h1 class="text-3xl font-black uppercase italic">By Beka 6B</h1>
-        <p class="text-yellow-400 font-bold">Турниры каждый день в 15:00!</p>
-    </header>
+    <div class="header">
+        <img src="https://via.placeholder.com/100x100?text=BS" style="border-radius: 50%;">
+        <h1>By Beka 6B</h1>
+        <p style="color: #f1c40f; font-weight: bold;">Турниры каждый день в 15:00</p>
+    </div>
 
-    <section class="max-w-2xl mx-auto mb-10 bg-red-600 p-4 rounded-xl border-2 border-white">
-        <h2 class="text-xl font-bold flex items-center mb-2">
-            ✅ ЧИТАТЬ ОБЯЗАТЕЛЬНО:
-        </h2>
-        <p class="text-sm">
-            При взносе <b>20 сом</b> (с 6 человек — банк 120 сом) команда-победитель (3v3) забирает <b>100 сом</b> на троих! Остальные 20 сом идут на развитие платформы.
-        </p>
-    </section>
+    <div class="warning">
+        <h3>✅ ЧИТАТЬ ОБЯЗАТЕЛЬНО</h3>
+        <p>Если 6 человек скидываются по 20 сом (3v3), общий банк — 120 сом. Команда-победитель забирает <b>100 сом</b> на троих!</p>
+    </div>
 
-    <main class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-        
-        <div class="brawl-card p-6 rounded-2xl text-center">
-            <img src="https://via.placeholder.com/300x150?text=Mega+Tournament" alt="Турнир 50" class="w-full rounded-lg mb-4 object-cover">
-            <h3 class="text-2xl font-bold mb-2">ТУРНИР НА 50 СОМ</h3>
-            <p class="mb-4 text-gray-300">Режим: 3v3 <br> Старт в 15:00</p>
-            <button onclick="joinTour('50 сом')" class="btn-join py-3 px-8 rounded-full uppercase">Записаться</button>
+    <div class="container">
+        <div class="card">
+            <img src="https://via.placeholder.com/250x150?text=50+SOM" alt="Турнир 50">
+            <h2>Турнир 50 сом</h2>
+            <p>Режим: 3v3</p>
+            <button onclick="alert('Вы успешно записались на турнир на 50 сом!')">Записаться</button>
         </div>
 
-        <div class="brawl-card p-6 rounded-2xl text-center">
-            <img src="https://via.placeholder.com/300x150?text=Daily+Brawl" alt="Турнир 20" class="w-full rounded-lg mb-4 object-cover">
-            <h3 class="text-2xl font-bold mb-2">ТУРНИР НА 20 СОМ</h3>
-            <p class="mb-4 text-gray-300">Режим: 3v3 <br> Старт в 15:00</p>
-            <button onclick="joinTour('20 сом')" class="btn-join py-3 px-8 rounded-full uppercase">Записаться</button>
+        <div class="card">
+            <img src="https://via.placeholder.com/250x150?text=20+SOM" alt="Турнир 20">
+            <h2>Турнир 20 сом</h2>
+            <p>Режим: 3v3</p>
+            <button onclick="alert('Вы успешно записались на турнир на 20 сом!')">Записаться</button>
         </div>
-
-    </main>
-
-    <script>
-        function joinTour(sum) {
-            // В будущем здесь можно сделать перенос на другую страницу
-            // Но пока что сделаем красивое уведомление
-            alert("Вы успешно записались на турнир на " + sum + "!\nЖдем вас в 15:00.");
-        }
-    </script>
+    </div>
 
 </body>
 </html>
