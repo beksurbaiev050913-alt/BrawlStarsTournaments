@@ -32,6 +32,7 @@
             justify-content: center;
             gap: 20px;
             margin: 30px 0;
+            flex-wrap: wrap;
         }
 
         .tab {
@@ -45,6 +46,7 @@
 
         .tab:hover {
             background: #334155;
+            transform: scale(1.03);
         }
 
         .tab img {
@@ -52,14 +54,10 @@
             border-radius: 10px;
         }
 
-        .tab h2 {
-            margin: 10px 0 0;
-        }
-
         .content {
             display: none;
             max-width: 600px;
-            margin: 0 auto;
+            margin: 20px auto;
             background: #020617;
             border-radius: 15px;
             padding: 25px;
@@ -96,6 +94,27 @@
             background: #64748b;
             cursor: not-allowed;
         }
+
+        .popup {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-content {
+            background: #020617;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 300px;
+        }
+
+        .popup-content h3 {
+            margin: 0 0 15px;
+            color: #22c55e;
+        }
     </style>
 </head>
 <body>
@@ -107,24 +126,25 @@
 
 <div class="tabs">
     <div class="tab" onclick="openTournament(50)">
-        <img src="https://via.placeholder.com/300x200" alt="Турнир 50 сом">
+        <img src="https://via.placeholder.com/300x200">
         <h2>Турнир — 50 сом</h2>
     </div>
 
     <div class="tab" onclick="openTournament(20)">
-        <img src="https://via.placeholder.com/300x200" alt="Турнир 20 сом">
+        <img src="https://via.placeholder.com/300x200">
         <h2>Турнир — 20 сом</h2>
     </div>
 </div>
 
+<!-- 50 сом -->
 <div id="tournament50" class="content">
     <h2>Вы успешно записались на турнир на 50 сом</h2>
-    <p>Турниры проходят каждый день в <b>15:00</b></p>
+    <p>Турниры каждый день в <b>15:00</b></p>
 
     <div class="rules">
         <p>👥 Формат: 3v3 (6 человек)</p>
-        <p>💰 Общий банк формируется участниками</p>
-        <p>🏆 Победившая команда забирает приз</p>
+        <p>💰 6 человек × 50 сом = <b>300 сом</b> общий банк</p>
+        <p>🏆 Победившая команда забирает <b>250 сом</b> (на троих)</p>
     </div>
 
     <div class="checkbox">
@@ -134,16 +154,17 @@
         </label>
     </div>
 
-    <button id="btn50" disabled>Подтвердить участие</button>
+    <button id="btn50" disabled onclick="register()">Подтвердить участие</button>
 </div>
 
+<!-- 20 сом -->
 <div id="tournament20" class="content">
     <h2>Вы успешно записались на турнир на 20 сом</h2>
-    <p>Турниры проходят каждый день в <b>15:00</b></p>
+    <p>Турниры каждый день в <b>15:00</b></p>
 
     <div class="rules">
         <p>👥 Формат: 3v3 (6 человек)</p>
-        <p>💰 6 человек × 20 сом = <b>120 сом</b> в общем банке</p>
+        <p>💰 6 человек × 20 сом = <b>120 сом</b> общий банк</p>
         <p>🏆 Победившая команда забирает <b>100 сом</b> (на троих)</p>
     </div>
 
@@ -154,7 +175,15 @@
         </label>
     </div>
 
-    <button id="btn20" disabled>Подтвердить участие</button>
+    <button id="btn20" disabled onclick="register()">Подтвердить участие</button>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <h3>✅ Готово!</h3>
+        <p>Вы успешно зарегистрировались!</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
 </div>
 
 <script>
@@ -162,17 +191,23 @@
         document.getElementById('tournament50').classList.remove('active');
         document.getElementById('tournament20').classList.remove('active');
 
-        if (price === 50) {
-            document.getElementById('tournament50').classList.add('active');
-        } else {
-            document.getElementById('tournament20').classList.add('active');
-        }
+        document.getElementById(
+            price === 50 ? 'tournament50' : 'tournament20'
+        ).classList.add('active');
 
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
     }
 
     function toggleButton(checkbox, btnId) {
         document.getElementById(btnId).disabled = !checkbox.checked;
+    }
+
+    function register() {
+        document.getElementById('popup').style.display = 'flex';
+    }
+
+    function closePopup() {
+        document.getElementById('popup').style.display = 'none';
     }
 </script>
 
