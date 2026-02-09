@@ -5,8 +5,9 @@
     <title>Донат калькулятор</title>
     <style>
         body {
+            margin: 0;
             font-family: Arial, sans-serif;
-            background: #0f172a;
+            background: radial-gradient(circle at top, #0f172a, #020617);
             color: #e5e7eb;
             display: flex;
             justify-content: center;
@@ -15,40 +16,36 @@
         }
 
         .box {
-            background: #020617;
+            background: rgba(2, 6, 23, 0.95);
             padding: 25px;
-            border-radius: 12px;
-            width: 320px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border-radius: 14px;
+            width: 330px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
         }
 
         h2 {
-            text-align: center;
             margin-bottom: 15px;
         }
 
         input {
             width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
+            padding: 12px;
             font-size: 16px;
-            margin-bottom: 10px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            margin-bottom: 15px;
         }
 
         .result {
-            margin-top: 15px;
-            background: #020617;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
+            font-size: 16px;
             font-weight: bold;
         }
 
         .error {
-            color: #f87171;
-            text-align: center;
             margin-top: 10px;
+            color: #f87171;
         }
     </style>
 </head>
@@ -57,35 +54,39 @@
 <div class="box">
     <h2>💸 Укажите сумму доната в долларах</h2>
 
-    <input 
-        type="number" 
-        id="usd" 
-        placeholder="Например: 3.50" 
-        min="0.01" 
-        max="10" 
+    <input
+        type="number"
+        min="0.01"
+        max="10"
         step="0.01"
+        placeholder="Например: 3.75"
         oninput="calculate()"
+        id="usd"
     >
 
-    <div class="result" id="result">
-        Введите сумму
-    </div>
-
+    <div class="result" id="result">Введите сумму</div>
     <div class="error" id="error"></div>
 </div>
 
 <script>
-    const RATE = 250; // курс: 1 доллар = 250 сом
+    const prices = {
+        1: 130,
+        2: 210,
+        3: 299,
+        4: 370,
+        5: 530,
+        6: 680,
+        7: 780,
+        8: 900,
+        9: 999,
+        10: 1090
+    };
 
-    function getCommission(usd) {
-        if (usd <= 2) return 0.20;
-        if (usd <= 5) return 0.18;
-        if (usd <= 8) return 0.15;
-        return 0.12;
-    }
+    const CENT_PRICE = 1.5; // 1 цент = 1.5 сома
 
     function calculate() {
-        const usd = parseFloat(document.getElementById("usd").value);
+        const input = document.getElementById("usd").value;
+        const usd = parseFloat(input);
         const result = document.getElementById("result");
         const error = document.getElementById("error");
 
@@ -102,12 +103,19 @@
             return;
         }
 
-        const baseSom = usd * RATE;
-        const commission = getCommission(usd);
-        const finalPrice = baseSom * (1 + commission);
+        const whole = Math.floor(usd);
+        const cents = Math.round((usd - whole) * 100);
+
+        let total = 0;
+
+        if (whole > 0) {
+            total += prices[whole];
+        }
+
+        total += cents * CENT_PRICE;
 
         result.textContent =
-            `На нашем рынке, такой донат будет стоить ${Math.round(finalPrice)} сомов!`;
+            `На нашем рынке, такой донат будет стоить ${Math.round(total)} сомов!`;
     }
 </script>
 
