@@ -1,122 +1,264 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Донат калькулятор</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: radial-gradient(circle at top, #0f172a, #020617);
-            color: #e5e7eb;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+<meta charset="UTF-8">
+<title>Angel Shop</title>
 
-        .box {
-            background: rgba(2, 6, 23, 0.95);
-            padding: 25px;
-            border-radius: 14px;
-            width: 330px;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 
-        h2 {
-            margin-bottom: 15px;
-        }
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: url('https://images.unsplash.com/photo-1608889176561-1d4d3cbbf2a6') no-repeat center center/cover;
+    color: white;
+}
 
-        input {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 10px;
-            border: none;
-            outline: none;
-            margin-bottom: 15px;
-        }
+h1 {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 50px;
+    margin-top: 20px;
+    text-shadow: 0 0 20px #00f;
+}
 
-        .result {
-            font-size: 16px;
-            font-weight: bold;
-        }
+.container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
 
-        .error {
-            margin-top: 10px;
-            color: #f87171;
-        }
-    </style>
+.card {
+    width: 250px;
+    margin: 15px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.7);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.card h2 {
+    text-align: center;
+    padding: 15px;
+}
+
+.products {
+    display: none;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #00cc66;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #00994d;
+}
+
+.back {
+    background: red;
+}
+</style>
 </head>
+
 <body>
 
-<div class="box">
-    <h2>💸 Укажите сумму доната в долларах</h2>
+<h1>✨ ANGEL SHOP ✨</h1>
 
-    <input
-        type="number"
-        min="0.01"
-        max="10"
-        step="0.01"
-        placeholder="Например: 3.75"
-        oninput="calculate()"
-        id="usd"
-    >
+<div id="main" class="container">
 
-    <div class="result" id="result">Введите сумму</div>
-    <div class="error" id="error"></div>
+<div class="card" onclick="openPage('bs')">
+<img src="https://images.unsplash.com/photo-1605902711622-cfb43c4437d1">
+<h2>Brawl Stars</h2>
+</div>
+
+<div class="card" onclick="openPage('rb')">
+<img src="https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea">
+<h2>Roblox</h2>
+</div>
+
+<div class="card" onclick="openPage('cr')">
+<img src="https://images.unsplash.com/photo-1612036782180-6f0822045d01">
+<h2>Clash Royale</h2>
+</div>
+
+</div>
+
+<!-- BRAWL STARS -->
+<div id="bs" class="products">
+
+<h2>Brawl Stars</h2>
+
+<button onclick="openPage('bp')">Brawl Pass</button>
+<button onclick="openPage('gems')">Gems in Angel</button>
+<br><br>
+<button class="back" onclick="back()">Назад</button>
+
+</div>
+
+<!-- BRAWL PASS -->
+<div id="bp" class="products">
+
+<h2>Brawl Pass</h2>
+
+<p>Brawl Pass — 749 сом</p>
+<button onclick="buy('Brawl Pass')">Купить</button>
+
+<p>Brawl Pass+ — 939 сом</p>
+<button onclick="buy('Brawl Pass+')">Купить</button>
+
+<br><br>
+<button class="back" onclick="back('bs')">Назад</button>
+
+</div>
+
+<!-- GEMS -->
+<div id="gems" class="products">
+
+<h2>Гемы</h2>
+
+<p>30 — 160 сом</p>
+<button onclick="buy('30 гемов')">Купить</button>
+
+<p>80 — 449 сом</p>
+<button onclick="buy('80 гемов')">Купить</button>
+
+<p>170 — 777 сом</p>
+<button onclick="buy('170 гемов')">Купить</button>
+
+<p>360 — 1800 сом</p>
+<button onclick="buy('360 гемов')">Купить</button>
+
+<p>960 — 4676 сом</p>
+<button onclick="buy('960 гемов')">Купить</button>
+
+<p>2000 — 6767 сом</p>
+<button onclick="buy('2000 гемов')">Купить</button>
+
+<br><br>
+<button class="back" onclick="back('bs')">Назад</button>
+
+</div>
+
+<!-- ROBLOX -->
+<div id="rb" class="products">
+
+<h2>Roblox</h2>
+
+<button onclick="openPage('premium')">Roblox Premium</button>
+<button onclick="openPage('robux')">Robux in Angel</button>
+
+<br><br>
+<button class="back" onclick="back()">Назад</button>
+
+</div>
+
+<!-- PREMIUM -->
+<div id="premium" class="products">
+
+<h2>Roblox Premium</h2>
+
+<p>Mini Premium — 550 сом</p>
+<button onclick="buy('Mini Premium')">Купить</button>
+
+<p>Big Premium — 930 сом</p>
+<button onclick="buy('Big Premium')">Купить</button>
+
+<br><br>
+<button class="back" onclick="back('rb')">Назад</button>
+
+</div>
+
+<!-- ROBUX -->
+<div id="robux" class="products">
+
+<h2>Robux</h2>
+
+<p>40 — 69 сом</p>
+<button onclick="buy('40 робуксов')">Купить</button>
+
+<p>80 — 130 сом</p>
+<button onclick="buy('80 робуксов')">Купить</button>
+
+<p>120 — 167 сом</p>
+<button onclick="buy('120 робуксов')">Купить</button>
+
+<p>160 — 200 сом</p>
+<button onclick="buy('160 робуксов')">Купить</button>
+
+<p>200 — 267 сом</p>
+<button onclick="buy('200 робуксов')">Купить</button>
+
+<br><br>
+<button class="back" onclick="back('rb')">Назад</button>
+
+</div>
+
+<!-- CLASH ROYALE -->
+<div id="cr" class="products">
+
+<h2>Clash Royale</h2>
+
+<p>5$ — 500 сом</p>
+<button onclick="buy('Clash Royale 5$')">Купить</button>
+
+<p>10$ — 950 сом</p>
+<button onclick="buy('Clash Royale 10$')">Купить</button>
+
+<p>20$ — 1850 сом</p>
+<button onclick="buy('Clash Royale 20$')">Купить</button>
+
+<br><br>
+<button class="back" onclick="back()">Назад</button>
+
 </div>
 
 <script>
-    const prices = {
-        1: 130,
-        2: 210,
-        3: 299,
-        4: 370,
-        5: 530,
-        6: 680,
-        7: 780,
-        8: 900,
-        9: 999,
-        10: 1090
-    };
 
-    const CENT_PRICE = 1.5; // 1 цент = 1.5 сома
-
-    function calculate() {
-        const input = document.getElementById("usd").value;
-        const usd = parseFloat(input);
-        const result = document.getElementById("result");
-        const error = document.getElementById("error");
-
-        error.textContent = "";
-
-        if (isNaN(usd)) {
-            result.textContent = "Введите сумму";
-            return;
-        }
-
-        if (usd > 10) {
-            error.textContent = "Максимальный донат — 10 долларов";
-            result.textContent = "❌";
-            return;
-        }
-
-        const whole = Math.floor(usd);
-        const cents = Math.round((usd - whole) * 100);
-
-        let total = 0;
-
-        if (whole > 0) {
-            total += prices[whole];
-        }
-
-        total += cents * CENT_PRICE;
-
-        result.textContent =
-            `На нашем рынке, такой донат будет стоить ${Math.round(total)} сомов!`;
+function openPage(page) {
+    document.getElementById('main').style.display = 'none';
+    let pages = document.getElementsByClassName('products');
+    for (let i = 0; i < pages.length; i++) {
+        pages[i].style.display = 'none';
     }
+    document.getElementById(page).style.display = 'block';
+}
+
+function back(page) {
+    let pages = document.getElementsByClassName('products');
+    for (let i = 0; i < pages.length; i++) {
+        pages[i].style.display = 'none';
+    }
+    if(page){
+        document.getElementById(page).style.display = 'block';
+    } else {
+        document.getElementById('main').style.display = 'flex';
+    }
+}
+
+function buy(item) {
+    window.location.href = "https://t.me/KosmosHardoxxx";
+}
+
 </script>
 
 </body>
