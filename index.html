@@ -2,263 +2,148 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Angel Shop</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+<title>💀 Копилка легенды</title>
 
 <style>
 body {
-    margin: 0;
-    font-family: Arial;
-    background: url('https://images.unsplash.com/photo-1608889176561-1d4d3cbbf2a6') no-repeat center center/cover;
-    color: white;
+  font-family: Arial;
+  color: white;
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(-45deg,#0f172a,#1e293b,#020617,#111827);
+  background-size: 400% 400%;
+  animation: bg 10s ease infinite;
 }
 
-h1 {
-    text-align: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 50px;
-    margin-top: 20px;
-    text-shadow: 0 0 20px #00f;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 40px;
+@keyframes bg {
+  0%{background-position:0%}
+  50%{background-position:100%}
+  100%{background-position:0%}
 }
 
 .card {
-    width: 250px;
-    margin: 15px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: rgba(0,0,0,0.7);
-    transition: 0.3s;
-    cursor: pointer;
+  background: rgba(30,41,59,0.9);
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 400px;
+  margin: auto;
 }
 
-.card:hover {
-    transform: scale(1.05);
+/* 🏺 БАНКА */
+.jar {
+  width: 120px;
+  height: 200px;
+  border: 4px solid white;
+  border-radius: 20px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
 }
 
-.card img {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
+.fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 0%;
+  background: #22c55e;
+  transition: 0.5s;
 }
 
-.card h2 {
-    text-align: center;
-    padding: 15px;
+/* 💀 POPUP */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
 }
 
-.products {
-    display: none;
-    text-align: center;
+.popup-box {
+  background: #1e293b;
+  padding: 25px;
+  border-radius: 15px;
 }
 
 button {
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    border-radius: 10px;
-    background: #00cc66;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+  margin: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-button:hover {
-    background: #00994d;
-}
+.ok { background: #22c55e; }
+.sus { background: #facc15; }
 
-.back {
-    background: red;
-}
 </style>
 </head>
 
 <body>
 
-<h1>✨ ANGEL SHOP ✨</h1>
+<div class="card">
+  <h1>📱 КОПИЛКА ЛЕГЕНДЫ</h1>
+  <h2 id="money">0 сом</h2>
+  <p>🎯 20000 сом</p>
 
-<div id="main" class="container">
+  <!-- 🏺 БАНКА -->
+  <div class="jar">
+    <div class="fill" id="fill"></div>
+  </div>
 
-<div class="card" onclick="openPage('bs')">
-<img src="https://images.unsplash.com/photo-1605902711622-cfb43c4437d1">
-<h2>Brawl Stars</h2>
+  <input type="number" id="input" placeholder="+ сом">
+  <br><br>
+  <button onclick="add()">💰 Закинуть</button>
+
+  <p id="status">💬 Начни копить, не позорься 😄</p>
 </div>
 
-<div class="card" onclick="openPage('rb')">
-<img src="https://images.unsplash.com/photo-1611605698323-b1e99cfd37ea">
-<h2>Roblox</h2>
-</div>
+<!-- 💀 POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <p>💀 Э, я вижу что ты зажал деньги!  
+    А НУ ЛОЖИ ВСЁ! Айфон ждёт ептваю!</p>
 
-<div class="card" onclick="openPage('cr')">
-<img src="https://images.unsplash.com/photo-1612036782180-6f0822045d01">
-<h2>Clash Royale</h2>
-</div>
-
-</div>
-
-<!-- BRAWL STARS -->
-<div id="bs" class="products">
-
-<h2>Brawl Stars</h2>
-
-<button onclick="openPage('bp')">Brawl Pass</button>
-<button onclick="openPage('gems')">Gems in Angel</button>
-<br><br>
-<button class="back" onclick="back()">Назад</button>
-
-</div>
-
-<!-- BRAWL PASS -->
-<div id="bp" class="products">
-
-<h2>Brawl Pass</h2>
-
-<p>Brawl Pass — 749 сом</p>
-<button onclick="buy('Brawl Pass')">Купить</button>
-
-<p>Brawl Pass+ — 939 сом</p>
-<button onclick="buy('Brawl Pass+')">Купить</button>
-
-<br><br>
-<button class="back" onclick="back('bs')">Назад</button>
-
-</div>
-
-<!-- GEMS -->
-<div id="gems" class="products">
-
-<h2>Гемы</h2>
-
-<p>30 — 160 сом</p>
-<button onclick="buy('30 гемов')">Купить</button>
-
-<p>80 — 449 сом</p>
-<button onclick="buy('80 гемов')">Купить</button>
-
-<p>170 — 777 сом</p>
-<button onclick="buy('170 гемов')">Купить</button>
-
-<p>360 — 1800 сом</p>
-<button onclick="buy('360 гемов')">Купить</button>
-
-<p>960 — 4676 сом</p>
-<button onclick="buy('960 гемов')">Купить</button>
-
-<p>2000 — 6767 сом</p>
-<button onclick="buy('2000 гемов')">Купить</button>
-
-<br><br>
-<button class="back" onclick="back('bs')">Назад</button>
-
-</div>
-
-<!-- ROBLOX -->
-<div id="rb" class="products">
-
-<h2>Roblox</h2>
-
-<button onclick="openPage('premium')">Roblox Premium</button>
-<button onclick="openPage('robux')">Robux in Angel</button>
-
-<br><br>
-<button class="back" onclick="back()">Назад</button>
-
-</div>
-
-<!-- PREMIUM -->
-<div id="premium" class="products">
-
-<h2>Roblox Premium</h2>
-
-<p>Mini Premium — 550 сом</p>
-<button onclick="buy('Mini Premium')">Купить</button>
-
-<p>Big Premium — 930 сом</p>
-<button onclick="buy('Big Premium')">Купить</button>
-
-<br><br>
-<button class="back" onclick="back('rb')">Назад</button>
-
-</div>
-
-<!-- ROBUX -->
-<div id="robux" class="products">
-
-<h2>Robux</h2>
-
-<p>40 — 69 сом</p>
-<button onclick="buy('40 робуксов')">Купить</button>
-
-<p>80 — 130 сом</p>
-<button onclick="buy('80 робуксов')">Купить</button>
-
-<p>120 — 167 сом</p>
-<button onclick="buy('120 робуксов')">Купить</button>
-
-<p>160 — 200 сом</p>
-<button onclick="buy('160 робуксов')">Купить</button>
-
-<p>200 — 267 сом</p>
-<button onclick="buy('200 робуксов')">Купить</button>
-
-<br><br>
-<button class="back" onclick="back('rb')">Назад</button>
-
-</div>
-
-<!-- CLASH ROYALE -->
-<div id="cr" class="products">
-
-<h2>Clash Royale</h2>
-
-<p>5$ — 500 сом</p>
-<button onclick="buy('Clash Royale 5$')">Купить</button>
-
-<p>10$ — 950 сом</p>
-<button onclick="buy('Clash Royale 10$')">Купить</button>
-
-<p>20$ — 1850 сом</p>
-<button onclick="buy('Clash Royale 20$')">Купить</button>
-
-<br><br>
-<button class="back" onclick="back()">Назад</button>
-
+    <button class="ok" onclick="answer1()">Ладно ладно</button>
+    <button class="sus" onclick="answer2()">Мамой клянусь, всё закинул</button>
+  </div>
 </div>
 
 <script>
+let goal = 20000;
+let money = localStorage.getItem("money") || 0;
 
-function openPage(page) {
-    document.getElementById('main').style.display = 'none';
-    let pages = document.getElementsByClassName('products');
-    for (let i = 0; i < pages.length; i++) {
-        pages[i].style.display = 'none';
-    }
-    document.getElementById(page).style.display = 'block';
+function update(){
+  document.getElementById("money").innerText = money + " сом";
+
+  let percent = (money / goal) * 100;
+  document.getElementById("fill").style.height = percent + "%";
 }
 
-function back(page) {
-    let pages = document.getElementsByClassName('products');
-    for (let i = 0; i < pages.length; i++) {
-        pages[i].style.display = 'none';
-    }
-    if(page){
-        document.getElementById(page).style.display = 'block';
-    } else {
-        document.getElementById('main').style.display = 'flex';
-    }
+function add(){
+  let val = document.getElementById("input").value;
+  if(val){
+    money = parseInt(money) + parseInt(val);
+    localStorage.setItem("money", money);
+    update();
+    document.getElementById("popup").style.display = "flex";
+  }
 }
 
-function buy(item) {
-    window.location.href = "https://t.me/KosmosHardoxxx";
+function answer1(){
+  document.getElementById("status").innerText = "😏 Вот так то лучше";
+  document.getElementById("popup").style.display = "none";
 }
 
+function answer2(){
+  document.getElementById("status").innerText = "🤨 Нуу, ладно. Свободен!";
+  document.getElementById("popup").style.display = "none";
+}
+
+update();
 </script>
 
 </body>
