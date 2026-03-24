@@ -1,150 +1,427 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>💀 Копилка легенды</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Копилка легенды</title>
 
-<style>
-body {
-  font-family: Arial;
-  color: white;
-  text-align: center;
-  padding: 40px;
-  background: linear-gradient(-45deg,#0f172a,#1e293b,#020617,#111827);
-  background-size: 400% 400%;
-  animation: bg 10s ease infinite;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-@keyframes bg {
-  0%{background-position:0%}
-  50%{background-position:100%}
-  100%{background-position:0%}
-}
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      padding: 30px 15px;
+      overflow-x: hidden;
+      position: relative;
+      background: linear-gradient(-45deg, #1d4ed8, #9333ea, #22c55e, #f59e0b);
+      background-size: 400% 400%;
+      animation: bg 12s ease infinite;
+    }
 
-.card {
-  background: rgba(30,41,59,0.9);
-  padding: 25px;
-  border-radius: 20px;
-  max-width: 400px;
-  margin: auto;
-}
+    @keyframes bg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-/* 🏺 БАНКА */
-.jar {
-  width: 120px;
-  height: 200px;
-  border: 4px solid white;
-  border-radius: 20px;
-  margin: 20px auto;
-  position: relative;
-  overflow: hidden;
-}
+    .card {
+      width: 100%;
+      max-width: 460px;
+      margin: 30px auto;
+      background: rgba(15, 23, 42, 0.78);
+      backdrop-filter: blur(8px);
+      border-radius: 24px;
+      padding: 28px 20px 32px;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+      position: relative;
+      z-index: 2;
+    }
 
-.fill {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 0%;
-  background: #22c55e;
-  transition: 0.5s;
-}
+    h1 {
+      margin: 0 0 18px;
+      font-size: 24px;
+      line-height: 1.3;
+    }
 
-/* 💀 POPUP */
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.8);
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
+    .money {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 10px 0 8px;
+    }
 
-.popup-box {
-  background: #1e293b;
-  padding: 25px;
-  border-radius: 15px;
-}
+    .goal {
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
 
-button {
-  margin: 10px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-}
+    .percent {
+      font-size: 16px;
+      color: #dbeafe;
+      margin-bottom: 18px;
+    }
 
-.ok { background: #22c55e; }
-.sus { background: #facc15; }
+    .jar-wrap {
+      display: flex;
+      justify-content: center;
+      margin: 18px 0 10px;
+    }
 
-</style>
+    .jar {
+      width: 140px;
+      height: 250px;
+      border: 5px solid rgba(255,255,255,0.95);
+      border-radius: 28px 28px 24px 24px;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,0.08);
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.08);
+    }
+
+    .jar::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 18px;
+      width: 100px;
+      height: 18px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.85);
+      opacity: 0.22;
+    }
+
+    .fill {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, #4ade80, #22c55e, #16a34a);
+      transition: height 0.5s ease;
+    }
+
+    .fill::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 16px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+    }
+
+    .progress-line {
+      width: 100%;
+      max-width: 280px;
+      height: 18px;
+      margin: 16px auto 8px;
+      background: rgba(255,255,255,0.22);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #facc15, #fb7185, #60a5fa);
+      transition: width 0.5s ease;
+    }
+
+    .input-row {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input {
+      width: 160px;
+      max-width: 100%;
+      padding: 12px 14px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      outline: none;
+      text-align: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+    }
+
+    .main-btn {
+      background: #f8fafc;
+      color: #111827;
+      font-weight: bold;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 20px;
+      line-height: 1.4;
+      min-height: 56px;
+    }
+
+    .small-text {
+      margin-top: 10px;
+      color: #dbeafe;
+      font-size: 14px;
+    }
+
+    .popup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 50;
+    }
+
+    .popup-box {
+      width: 100%;
+      max-width: 470px;
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-radius: 22px;
+      padding: 26px 18px 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .popup-box p {
+      font-size: 22px;
+      line-height: 1.5;
+      margin: 0 0 18px;
+    }
+
+    .popup-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .ok {
+      background: #22c55e;
+      color: #052e16;
+      font-weight: bold;
+    }
+
+    .sus {
+      background: #facc15;
+      color: #422006;
+      font-weight: bold;
+    }
+
+    .floating {
+      position: fixed;
+      font-size: 15px;
+      font-weight: bold;
+      opacity: 0.92;
+      animation: floatUp linear forwards;
+      pointer-events: none;
+      z-index: 1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      white-space: nowrap;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-220px);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .money {
+        font-size: 34px;
+      }
+
+      .goal {
+        font-size: 18px;
+      }
+
+      .jar {
+        width: 120px;
+        height: 220px;
+      }
+
+      .popup-box p {
+        font-size: 18px;
+      }
+
+      .status {
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="card">
-  <h1>📱 КОПИЛКА ЛЕГЕНДЫ</h1>
-  <h2 id="money">0 сом</h2>
-  <p>🎯 20000 сом</p>
+  <div class="card">
+    <h1>🧮 КОПИЛКА ЛЕГЕНДЫ</h1>
 
-  <!-- 🏺 БАНКА -->
-  <div class="jar">
-    <div class="fill" id="fill"></div>
+    <div class="money" id="money">0 сом</div>
+    <div class="goal">🎯 Цель: 20000 сом</div>
+    <div class="percent" id="percentText">Накоплено: 0%</div>
+
+    <div class="jar-wrap">
+      <div class="jar">
+        <div class="fill" id="fill"></div>
+      </div>
+    </div>
+
+    <div class="progress-line">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="small-text" id="leftText">До айфона осталось: 20000 сом</div>
+
+    <div class="input-row">
+      <input type="number" id="input" placeholder="+ сом" min="1" />
+      <button class="main-btn" onclick="addMoney()">💰 Закинуть</button>
+    </div>
+
+    <div class="status" id="status">💬 Начни копить, легенда. Айфон сам себя не купит 😄</div>
   </div>
 
-  <input type="number" id="input" placeholder="+ сом">
-  <br><br>
-  <button onclick="add()">💰 Закинуть</button>
-
-  <p id="status">💬 Начни копить, не позорься 😄</p>
-</div>
-
-<!-- 💀 POPUP -->
-<div class="popup" id="popup">
-  <div class="popup-box">
-    <p>💀 Э, я вижу что ты зажал деньги!  
-    А НУ ЛОЖИ ВСЁ! Айфон ждёт ептваю!</p>
-
-    <button class="ok" onclick="answer1()">Ладно ладно</button>
-    <button class="sus" onclick="answer2()">Мамой клянусь, всё закинул</button>
+  <div class="popup" id="popup">
+    <div class="popup-box">
+      <p>💀 Э, я вижу что ты зажал деньги, а ну ложи всё! Айфон ждёт ептваю!</p>
+      <div class="popup-buttons">
+        <button class="ok" onclick="answer1()">Ладно ладно</button>
+        <button class="sus" onclick="answer2()">Мамой клянусь, всё до копейки закинул</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-let goal = 20000;
-let money = localStorage.getItem("money") || 0;
+  <script>
+    const goal = 20000;
+    let money = parseInt(localStorage.getItem("money")) || 0;
 
-function update(){
-  document.getElementById("money").innerText = money + " сом";
+    const normalMotivators = [
+      "💀 Айфон сам себя не купит",
+      "🔥 +100 сом = ближе к мечте",
+      "😏 Ты почти там",
+      "📱 Представь лицо одноклассников",
+      "💸 Не сливай деньги, ты не слабак",
+      "🚀 Бексултан идёт к цели",
+      "😄 Даже 50 сом — уже движение",
+      "👀 Айфон уже ждёт тебя",
+      "💪 Легенда не сдаётся",
+      "⚡ Ещё чуть-чуть!",
+      "🫡 Сегодня копишь — завтра кайфуешь",
+      "💰 Деньги любят терпеливых"
+    ];
 
-  let percent = (money / goal) * 100;
-  document.getElementById("fill").style.height = percent + "%";
-}
+    const progressMotivators = [
+      { min: 0, text: "💬 Начни копить, легенда. Айфон сам себя не купит 😄" },
+      { min: 1000, text: "😏 Уже пошло дело. Не останавливайся." },
+      { min: 3000, text: "🔥 Вот это уже не шутки. Банка оживает." },
+      { min: 5000, text: "💪 Нормально так разогнался. Уважаю." },
+      { min: 8000, text: "👀 Айфон уже где-то нервно оглянулся." },
+      { min: 10000, text: "🚀 Половина пути почти твоя. Это мощно." },
+      { min: 15000, text: "📱 Всё, айфон уже чувствует твоё присутствие." },
+      { min: 19000, text: "💀 Брат, финиш рядом. Не слейся сейчас!" },
+      { min: 20000, text: "🏆 ЛЕГЕНДА! Цель выполнена. Айфон почти в кармане!" }
+    ];
 
-function add(){
-  let val = document.getElementById("input").value;
-  if(val){
-    money = parseInt(money) + parseInt(val);
-    localStorage.setItem("money", money);
-    update();
-    document.getElementById("popup").style.display = "flex";
-  }
-}
+    function getProgressMessage() {
+      let message = progressMotivators[0].text;
+      for (const item of progressMotivators) {
+        if (money >= item.min) {
+          message = item.text;
+        }
+      }
+      return message;
+    }
 
-function answer1(){
-  document.getElementById("status").innerText = "😏 Вот так то лучше";
-  document.getElementById("popup").style.display = "none";
-}
+    function updateUI() {
+      const percent = Math.min((money / goal) * 100, 100);
+      const left = Math.max(goal - money, 0);
 
-function answer2(){
-  document.getElementById("status").innerText = "🤨 Нуу, ладно. Свободен!";
-  document.getElementById("popup").style.display = "none";
-}
+      document.getElementById("money").innerText = money + " сом";
+      document.getElementById("fill").style.height = percent + "%";
+      document.getElementById("progressBar").style.width = percent + "%";
+      document.getElementById("percentText").innerText = "Накоплено: " + percent.toFixed(1) + "%";
+      document.getElementById("leftText").innerText =
+        left > 0 ? "До айфона осталось: " + left + " сом" : "Айфон можно брать, легенда 😎";
 
-update();
-</script>
+      if (!document.getElementById("popup").style.display || document.getElementById("popup").style.display === "none") {
+        document.getElementById("status").innerText = getProgressMessage();
+      }
+    }
 
+    function addMoney() {
+      const input = document.getElementById("input");
+      const val = parseInt(input.value);
+
+      if (!val || val <= 0) {
+        document.getElementById("status").innerText = "🤨 Эээ, нормально сумму введи сначала";
+        return;
+      }
+
+      money += val;
+      localStorage.setItem("money", money);
+      input.value = "";
+      updateUI();
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function answer1() {
+      document.getElementById("status").innerText = "😏 Вот так то лучше";
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function answer2() {
+      document.getElementById("status").innerText = "😌 Нуу, ладно. Свободен!";
+      document.getElementById("popup").style.display = "none";
+    }
+
+    function spawnFloatingText() {
+      const text = document.createElement("div");
+      text.className = "floating";
+      text.innerText = normalMotivators[Math.floor(Math.random() * normalMotivators.length)];
+
+      text.style.left = Math.random() * (window.innerWidth - 220) + "px";
+      text.style.top = (window.innerHeight - 40) + "px";
+      text.style.animationDuration = (3 + Math.random() * 2.5) + "s";
+
+      const colors = ["#ffffff", "#fef08a", "#bfdbfe", "#f9a8d4", "#bbf7d0", "#fdba74"];
+      text.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+      document.body.appendChild(text);
+
+      setTimeout(() => {
+        text.remove();
+      }, 5500);
+    }
+
+    setInterval(spawnFloatingText, 1800);
+
+    updateUI();
+  </script>
 </body>
 </html>
