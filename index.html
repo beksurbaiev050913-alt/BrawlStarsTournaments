@@ -172,6 +172,12 @@
       font-weight: bold;
     }
 
+    .reset-btn {
+      background: #ef4444;
+      color: white;
+      font-weight: bold;
+    }
+
     .status {
       margin-top: 20px;
       font-size: 20px;
@@ -228,6 +234,18 @@
     .sus {
       background: #facc15;
       color: #422006;
+      font-weight: bold;
+    }
+
+    .danger {
+      background: #ef4444;
+      color: white;
+      font-weight: bold;
+    }
+
+    .cancel {
+      background: #94a3b8;
+      color: #0f172a;
       font-weight: bold;
     }
 
@@ -302,17 +320,30 @@
     <div class="input-row">
       <input type="number" id="input" placeholder="+ сом" min="1" />
       <button class="main-btn" onclick="addMoney()">💰 Закинуть</button>
+      <button class="reset-btn" onclick="openResetPopup()">🗑 Сбросить</button>
     </div>
 
     <div class="status" id="status">💬 Начни копить, легенда. Айфон сам себя не купит 😄</div>
   </div>
 
+  <!-- Попап при добавлении -->
   <div class="popup" id="popup">
     <div class="popup-box">
       <p>💀 Э, я вижу что ты зажал деньги, а ну ложи всё! Айфон ждёт ептваю!</p>
       <div class="popup-buttons">
         <button class="ok" onclick="answer1()">Ладно ладно</button>
         <button class="sus" onclick="answer2()">Мамой клянусь, всё до копейки закинул</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Попап сброса -->
+  <div class="popup" id="resetPopup">
+    <div class="popup-box">
+      <p>💀 Ема ты терпила</p>
+      <div class="popup-buttons">
+        <button class="danger" onclick="resetMoney()">Сбросить деньги</button>
+        <button class="cancel" onclick="closeResetPopup()">Отмена</button>
       </div>
     </div>
   </div>
@@ -333,7 +364,15 @@
       "💪 Легенда не сдаётся",
       "⚡ Ещё чуть-чуть!",
       "🫡 Сегодня копишь — завтра кайфуешь",
-      "💰 Деньги любят терпеливых"
+      "💰 Деньги любят терпеливых",
+      "😎 Э слышь чушпан, айфон надо"
+    ];
+
+    const emptyInputMessages = [
+      "🤨 Эээ, нормально сумму введи сначала",
+      "💀 Брат, ты че, воздух закидываешь?",
+      "😏 Деньги где? Айфон сам себя не оплатит",
+      "🤨 Ты кого обмануть решил?"
     ];
 
     const progressMotivators = [
@@ -358,6 +397,10 @@
       return message;
     }
 
+    function getRandomMessage(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
     function updateUI() {
       const percent = Math.min((money / goal) * 100, 100);
       const left = Math.max(goal - money, 0);
@@ -369,7 +412,10 @@
       document.getElementById("leftText").innerText =
         left > 0 ? "До айфона осталось: " + left + " сом" : "Айфон можно брать, легенда 😎";
 
-      if (!document.getElementById("popup").style.display || document.getElementById("popup").style.display === "none") {
+      const addPopupOpen = document.getElementById("popup").style.display === "flex";
+      const resetPopupOpen = document.getElementById("resetPopup").style.display === "flex";
+
+      if (!addPopupOpen && !resetPopupOpen) {
         document.getElementById("status").innerText = getProgressMessage();
       }
     }
@@ -379,7 +425,7 @@
       const val = parseInt(input.value);
 
       if (!val || val <= 0) {
-        document.getElementById("status").innerText = "🤨 Эээ, нормально сумму введи сначала";
+        document.getElementById("status").innerText = getRandomMessage(emptyInputMessages);
         return;
       }
 
@@ -400,10 +446,27 @@
       document.getElementById("popup").style.display = "none";
     }
 
+    function openResetPopup() {
+      document.getElementById("resetPopup").style.display = "flex";
+    }
+
+    function closeResetPopup() {
+      document.getElementById("resetPopup").style.display = "none";
+      updateUI();
+    }
+
+    function resetMoney() {
+      money = 0;
+      localStorage.setItem("money", money);
+      document.getElementById("resetPopup").style.display = "none";
+      document.getElementById("status").innerText = "💀 Всё обнулил. Начинай сначала, чушпан.";
+      updateUI();
+    }
+
     function spawnFloatingText() {
       const text = document.createElement("div");
       text.className = "floating";
-      text.innerText = normalMotivators[Math.floor(Math.random() * normalMotivators.length)];
+      text.innerText = getRandomMessage(normalMotivators);
 
       text.style.left = Math.random() * (window.innerWidth - 220) + "px";
       text.style.top = (window.innerHeight - 40) + "px";
