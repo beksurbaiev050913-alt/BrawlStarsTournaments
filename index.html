@@ -3,274 +3,710 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Air Plus</title>
+  <title>Urbaev Casino</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; }
 
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      overflow: hidden;
-      background: radial-gradient(circle at top, #1f2b6d 0%, #0b1026 35%, #02030a 100%);
-      height: 100vh;
+      background:
+        radial-gradient(circle at top, #243b55 0%, #141e30 45%, #0a0f1f 100%);
       color: white;
-      position: relative;
+      min-height: 100vh;
     }
 
-    /* Звезды */
-    .stars, .stars2, .stars3 {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      background-repeat: repeat;
-      pointer-events: none;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: rgba(0,0,0,0.25);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
     }
 
-    .stars {
-      background-image:
-        radial-gradient(2px 2px at 20px 30px, white, transparent),
-        radial-gradient(1.5px 1.5px at 100px 120px, #cfd8ff, transparent),
-        radial-gradient(2px 2px at 200px 80px, white, transparent),
-        radial-gradient(1.5px 1.5px at 300px 200px, #ffffff, transparent),
-        radial-gradient(2px 2px at 400px 150px, #dbe6ff, transparent),
-        radial-gradient(1.5px 1.5px at 550px 90px, white, transparent),
-        radial-gradient(2px 2px at 700px 250px, #ffffff, transparent),
-        radial-gradient(1.5px 1.5px at 900px 100px, #dbe6ff, transparent);
-      background-size: 1000px 400px;
-      animation: moveStars 80s linear infinite;
-      opacity: 0.9;
+    .title {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 1px;
     }
 
-    .stars2 {
-      background-image:
-        radial-gradient(1.5px 1.5px at 50px 50px, white, transparent),
-        radial-gradient(2px 2px at 180px 170px, #dbe6ff, transparent),
-        radial-gradient(1.5px 1.5px at 350px 60px, white, transparent),
-        radial-gradient(2px 2px at 500px 220px, #ffffff, transparent),
-        radial-gradient(1.5px 1.5px at 700px 130px, #cfd8ff, transparent),
-        radial-gradient(2px 2px at 850px 280px, white, transparent);
-      background-size: 1100px 450px;
-      animation: moveStars 120s linear infinite reverse;
-      opacity: 0.65;
+    .balances {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
-    .stars3 {
-      background-image:
-        radial-gradient(2px 2px at 120px 70px, white, transparent),
-        radial-gradient(1.5px 1.5px at 280px 140px, #dbe6ff, transparent),
-        radial-gradient(2px 2px at 460px 40px, white, transparent),
-        radial-gradient(1.5px 1.5px at 680px 180px, #ffffff, transparent),
-        radial-gradient(2px 2px at 920px 90px, #cfd8ff, transparent);
-      background-size: 1200px 500px;
-      animation: moveStars 160s linear infinite;
-      opacity: 0.45;
-    }
-
-    @keyframes moveStars {
-      from { transform: translateY(0); }
-      to { transform: translateY(-400px); }
+    .pill {
+      background: rgba(255,255,255,0.1);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: bold;
+      border: 1px solid rgba(255,255,255,0.08);
     }
 
     .container {
-      position: relative;
-      z-index: 2;
-      height: 100vh;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .menu {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
+      gap: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
     }
 
-    h1 {
-      font-size: 64px;
-      letter-spacing: 3px;
-      margin-bottom: 30px;
-      text-shadow: 0 0 15px rgba(255,255,255,0.35);
-    }
-
-    .create-btn {
-      padding: 16px 34px;
-      font-size: 22px;
-      font-weight: bold;
-      border: none;
-      border-radius: 16px;
-      cursor: pointer;
-      color: white;
-      background: linear-gradient(135deg, #4f7cff, #7d5cff);
-      box-shadow: 0 10px 30px rgba(90, 120, 255, 0.35);
-      transition: 0.25s;
-    }
-
-    .create-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 35px rgba(90, 120, 255, 0.5);
-    }
-
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
-      padding: 20px;
-    }
-
-    .modal {
-      width: 100%;
-      max-width: 420px;
-      background: #ffffff;
-      color: #222;
-      border-radius: 22px;
-      padding: 28px 24px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      animation: popup 0.25s ease;
-    }
-
-    @keyframes popup {
-      from {
-        transform: scale(0.9);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .modal h2 {
-      font-size: 28px;
-      margin-bottom: 14px;
-      color: #2a2a2a;
-    }
-
-    .modal p {
-      font-size: 18px;
-      line-height: 1.5;
-      margin-bottom: 24px;
-      color: #444;
-    }
-
-    .close-btn {
-      padding: 14px 28px;
-      font-size: 18px;
-      font-weight: bold;
+    button {
       border: none;
       border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.06);
+    }
+
+    .btn-main {
+      background: linear-gradient(135deg, #ffcc00, #ff9f1a);
+      color: #1c1300;
+      box-shadow: 0 10px 24px rgba(255, 180, 0, 0.2);
+    }
+
+    .btn-alt {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #06223a;
+      box-shadow: 0 10px 24px rgba(0, 200, 255, 0.16);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #ff6b6b, #ff3b3b);
       color: white;
-      background: linear-gradient(135deg, #ff5b5b, #ff7b7b);
-      transition: 0.2s;
     }
 
-    .close-btn:hover {
-      transform: scale(1.05);
+    .btn-green {
+      background: linear-gradient(135deg, #55efc4, #00b894);
+      color: #052c22;
     }
 
-    .planet {
-      position: absolute;
-      right: -80px;
-      top: 80px;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #6fa8ff, #2f4b9a 60%, #18244f 100%);
-      box-shadow: 0 0 60px rgba(95, 140, 255, 0.25);
-      opacity: 0.8;
-      z-index: 1;
+    .section {
+      display: none;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.2);
     }
 
-    .planet::after {
-      content: "";
-      position: absolute;
-      left: -30px;
-      top: 105px;
-      width: 320px;
-      height: 40px;
-      border: 5px solid rgba(210, 220, 255, 0.5);
-      border-radius: 50%;
-      transform: rotate(-12deg);
+    .section.active {
+      display: block;
+      animation: fade 0.3s ease;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 42px;
-      }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-      .create-btn {
-        font-size: 18px;
-        padding: 14px 24px;
-      }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
 
-      .modal h2 {
-        font-size: 24px;
-      }
+    .card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
 
-      .modal p {
-        font-size: 16px;
-      }
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 24px;
+    }
 
-      .planet {
-        width: 170px;
-        height: 170px;
-        right: -50px;
-        top: 60px;
-      }
+    .muted {
+      color: #d8e3ff;
+      opacity: 0.9;
+      line-height: 1.5;
+    }
 
-      .planet::after {
-        width: 210px;
-        left: -20px;
-        top: 65px;
-      }
+    .field {
+      margin: 12px 0;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background: rgba(255,255,255,0.92);
+      color: #111;
+    }
+
+    .result {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.22);
+      min-height: 52px;
+      line-height: 1.5;
+      white-space: pre-line;
+    }
+
+    .game-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+    }
+
+    .roulette-players {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .player-box {
+      background: rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.06);
+      font-weight: bold;
+    }
+
+    .highlight {
+      outline: 3px solid #ffd54f;
+      transform: scale(1.03);
+    }
+
+    .slot-machine {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin: 18px 0;
+      flex-wrap: wrap;
+    }
+
+    .slot {
+      width: 90px;
+      height: 90px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+      border: 2px solid rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    }
+
+    .big-number {
+      font-size: 52px;
+      font-weight: 900;
+      text-align: center;
+      margin: 14px 0;
+      color: #ffd76a;
+      text-shadow: 0 0 20px rgba(255, 215, 106, 0.25);
+    }
+
+    .small-note {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-top: 8px;
+    }
+
+    .home-box {
+      text-align: center;
+      padding: 30px 20px;
+    }
+
+    .home-box h2 {
+      font-size: 34px;
+      margin-bottom: 10px;
+    }
+
+    .home-box p {
+      font-size: 18px;
+      opacity: 0.92;
+    }
+
+    .home-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin-top: 10px;
+      background: rgba(255, 214, 10, 0.13);
+      color: #ffe58d;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      .title { font-size: 22px; }
+      .big-number { font-size: 40px; }
     }
   </style>
 </head>
 <body>
-  <div class="stars"></div>
-  <div class="stars2"></div>
-  <div class="stars3"></div>
-  <div class="planet"></div>
-
-  <div class="container">
-    <h1>Air Plus</h1>
-    <button class="create-btn" onclick="openModal()">Создать игру</button>
+  <div class="topbar">
+    <div class="title">🎰 Urbaev Casino</div>
+    <div class="balances">
+      <div class="pill">💰 Сомы: <span id="somDisplay">10</span></div>
+      <div class="pill">🪙 Фишки: <span id="chipsDisplay">100000</span></div>
+    </div>
   </div>
 
-  <div class="modal-overlay" id="modal">
-    <div class="modal">
-      <h2>Ой!</h2>
-      <p>
-        Приложение Family Link мешает нашему приложению.
-        Удалите его для продолжения.
-      </p>
-      <button class="close-btn" onclick="closeModal()">Закрыть</button>
+  <div class="container">
+    <div class="menu">
+      <button class="btn-main" onclick="showSection('homeSection')">🏠 Лобби</button>
+      <button class="btn-alt" onclick="showSection('shopSection')">🛒 Магазин</button>
+      <button class="btn-main" onclick="showSection('gamesSection')">🎮 Игра</button>
+    </div>
+
+    <div id="homeSection" class="section active">
+      <div class="home-box">
+        <h2>Добро пожаловать в казино</h2>
+        <p>Здесь можно менять сомы на фишки, играть против удачи и соревноваться с ботами.</p>
+        <div class="tag">Курс: 1 сом = 10.000 фишек</div>
+        <div class="home-actions">
+          <button class="btn-alt" onclick="showSection('shopSection')">Открыть магазин</button>
+          <button class="btn-main" onclick="showSection('gamesSection')">Начать играть</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="shopSection" class="section">
+      <h2>🛒 Магазин обмена</h2>
+      <p class="muted">Тут можно обменять валюту. Курс фиксированный: <b>1 сом = 10.000 фишек</b>.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Сомы → фишки</h3>
+          <div class="field">
+            <input id="buyChipsSomInput" type="number" min="1" placeholder="Сколько сомов обменять?" />
+          </div>
+          <button class="btn-green" onclick="buyChips()">Купить фишки</button>
+          <div class="small-note">Пример: 2 сома = 20.000 фишек</div>
+        </div>
+
+        <div class="card">
+          <h3>Фишки → сомы</h3>
+          <div class="field">
+            <input id="sellChipsInput" type="number" min="10000" step="10000" placeholder="Сколько фишек обменять?" />
+          </div>
+          <button class="btn-main" onclick="sellChips()">Обменять на сомы</button>
+          <div class="small-note">Минимум для обмена: 10.000 фишек = 1 сом</div>
+        </div>
+      </div>
+
+      <div id="shopResult" class="result">Добро пожаловать в магазин обмена.</div>
+    </div>
+
+    <div id="gamesSection" class="section">
+      <h2>🎮 Игры</h2>
+      <p class="muted">Выбирай игру. Лимит ставки для всех игр: от <b>100</b> до <b>10.000</b> фишек.</p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>🎯 Рулетка 1 из 5</h3>
+          <p class="muted">
+            Ты заходишь в комнату, потом 4 секунды набираются боты.
+            Когда все 5 игроков собрались, система случайно выбирает победителя.
+            Победитель забирает весь банк.
+          </p>
+
+          <div class="field">
+            <input id="rouletteBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
+          </div>
+
+          <button id="rouletteStartBtn" class="btn-main" onclick="startRoulette()">Играть в рулетку</button>
+
+          <div id="rouletteStatus" class="result">Ожидание начала игры.</div>
+          <div id="roulettePlayers" class="roulette-players"></div>
+        </div>
+
+        <div class="card">
+          <h3>🔼🔽 Больше или меньше</h3>
+          <p class="muted">
+            Сначала выпадает число от 40 до 120.
+            Потом ты выбираешь — следующее будет больше или меньше.
+          </p>
+
+          <div class="field">
+            <input id="higherLowerBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
+          </div>
+
+          <button class="btn-alt" onclick="startHigherLower()">Получить первое число</button>
+
+          <div class="big-number" id="hlCurrentNumber">?</div>
+
+          <div class="game-buttons">
+            <button class="btn-green" onclick="guessHigher('more')">Будет больше</button>
+            <button class="btn-danger" onclick="guessHigher('less')">Будет меньше</button>
+          </div>
+
+          <div id="higherLowerResult" class="result">Сначала нажми «Получить первое число».</div>
+        </div>
+
+        <div class="card">
+          <h3>🍒 Jackpot</h3>
+          <p class="muted">
+            Выигрыши:
+            <br>🍒🍒🍒 = x100
+            <br>🍊🍊🍊 = x20
+            <br>🍇🍇🍇 = x5
+            <br>🍑🍑🍑 = x2
+          </p>
+
+          <div class="field">
+            <input id="jackpotBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
+          </div>
+
+          <div class="slot-machine">
+            <div class="slot" id="slot1">❔</div>
+            <div class="slot" id="slot2">❔</div>
+            <div class="slot" id="slot3">❔</div>
+          </div>
+
+          <button class="btn-main" onclick="spinJackpot()">Крутить Jackpot</button>
+
+          <div id="jackpotResult" class="result">Сделай ставку и крути.</div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    const modal = document.getElementById("modal");
+    const CHIP_RATE = 10000;
+    const MIN_BET = 100;
+    const MAX_BET = 10000;
 
-    function openModal() {
-      modal.style.display = "flex";
+    let som = Number(localStorage.getItem('casino_som')) || 10;
+    let chips = Number(localStorage.getItem('casino_chips')) || 100000;
+
+    let rouletteBusy = false;
+
+    let higherLowerState = {
+      active: false,
+      bet: 0,
+      firstNumber: null
+    };
+
+    const botNames = [
+      "Макс", "Депчик", "Ричи", "Лаки", "Молния", "Фартовый",
+      "Бустер", "Смайл", "Зевс", "Кэшик", "Оскар", "Тузик"
+    ];
+
+    function saveData() {
+      localStorage.setItem('casino_som', som);
+      localStorage.setItem('casino_chips', chips);
+      updateBalances();
     }
 
-    function closeModal() {
-      modal.style.display = "none";
+    function updateBalances() {
+      document.getElementById('somDisplay').textContent = formatNumber(som);
+      document.getElementById('chipsDisplay').textContent = formatNumber(chips);
     }
 
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) {
-        closeModal();
+    function formatNumber(num) {
+      return Number(num).toLocaleString('ru-RU');
+    }
+
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function setResult(id, text) {
+      document.getElementById(id).textContent = text;
+    }
+
+    function validateBet(bet) {
+      if (!Number.isFinite(bet)) return "Введите ставку.";
+      if (bet < MIN_BET) return `Минимальная ставка: ${MIN_BET} фишек.`;
+      if (bet > MAX_BET) return `Максимальная ставка: ${MAX_BET} фишек.`;
+      if (bet > chips) return "У тебя недостаточно фишек.";
+      return null;
+    }
+
+    function buyChips() {
+      const input = document.getElementById('buyChipsSomInput');
+      const value = Number(input.value);
+
+      if (!Number.isFinite(value) || value <= 0) {
+        setResult('shopResult', 'Введи нормальное количество сомов.');
+        return;
       }
-    });
+
+      if (!Number.isInteger(value)) {
+        setResult('shopResult', 'Обмен сомов только целыми числами.');
+        return;
+      }
+
+      if (value > som) {
+        setResult('shopResult', 'У тебя нет столько сомов.');
+        return;
+      }
+
+      const bought = value * CHIP_RATE;
+      som -= value;
+      chips += bought;
+      saveData();
+
+      setResult('shopResult', `Ты обменял ${formatNumber(value)} сом на ${formatNumber(bought)} фишек.`);
+      input.value = "";
+    }
+
+    function sellChips() {
+      const input = document.getElementById('sellChipsInput');
+      const value = Number(input.value);
+
+      if (!Number.isFinite(value) || value <= 0) {
+        setResult('shopResult', 'Введи нормальное количество фишек.');
+        return;
+      }
+
+      if (value % CHIP_RATE !== 0) {
+        setResult('shopResult', 'Менять фишки можно только кратно 10.000.');
+        return;
+      }
+
+      if (value > chips) {
+        setResult('shopResult', 'У тебя нет столько фишек.');
+        return;
+      }
+
+      const gotSom = value / CHIP_RATE;
+      chips -= value;
+      som += gotSom;
+      saveData();
+
+      setResult('shopResult', `Ты обменял ${formatNumber(value)} фишек на ${formatNumber(gotSom)} сом.`);
+      input.value = "";
+    }
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function pickRandomBots(count) {
+      const shuffled = [...botNames].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, count);
+    }
+
+    async function startRoulette() {
+      if (rouletteBusy) return;
+
+      const bet = Number(document.getElementById('rouletteBet').value);
+      const error = validateBet(bet);
+      if (error) {
+        setResult('rouletteStatus', error);
+        return;
+      }
+
+      rouletteBusy = true;
+      document.getElementById('rouletteStartBtn').disabled = true;
+      const playersWrap = document.getElementById('roulettePlayers');
+      playersWrap.innerHTML = "";
+
+      chips -= bet;
+      saveData();
+
+      const allPlayers = ["Ты"];
+      setResult('rouletteStatus', `Ты вошел в комнату со ставкой ${formatNumber(bet)} фишек.\nИщем игроков...`);
+
+      renderPlayers(allPlayers);
+
+      const bots = pickRandomBots(4);
+
+      for (let i = 0; i < bots.length; i++) {
+        await delay(1000);
+        allPlayers.push(bots[i]);
+        renderPlayers(allPlayers);
+        setResult(
+          'rouletteStatus',
+          `Игроки набираются... ${allPlayers.length}/5`
+        );
+      }
+
+      await delay(600);
+
+      const bank = bet * 5;
+      setResult('rouletteStatus', `Все игроки собраны.\nОбщий банк: ${formatNumber(bank)} фишек.\nКрутим рулетку...`);
+
+      const boxes = [...playersWrap.children];
+      let finalIndex = randomInt(0, 4);
+
+      for (let i = 0; i < 14; i++) {
+        const idx = i % boxes.length;
+        boxes.forEach(b => b.classList.remove('highlight'));
+        boxes[idx].classList.add('highlight');
+        await delay(130);
+      }
+
+      boxes.forEach(b => b.classList.remove('highlight'));
+      boxes[finalIndex].classList.add('highlight');
+
+      const winner = allPlayers[finalIndex];
+
+      if (winner === "Ты") {
+        chips += bank;
+        saveData();
+        setResult('rouletteStatus', `🎉 Победитель: ТЫ!\nТы забрал весь банк: ${formatNumber(bank)} фишек.`);
+      } else {
+        setResult('rouletteStatus', `😢 Победитель: ${winner}\nОн забрал банк: ${formatNumber(bank)} фишек.`);
+      }
+
+      rouletteBusy = false;
+      document.getElementById('rouletteStartBtn').disabled = false;
+    }
+
+    function renderPlayers(arr) {
+      const wrap = document.getElementById('roulettePlayers');
+      wrap.innerHTML = "";
+      arr.forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'player-box';
+        div.textContent = name;
+        wrap.appendChild(div);
+      });
+    }
+
+    function delay(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function startHigherLower() {
+      const bet = Number(document.getElementById('higherLowerBet').value);
+      const error = validateBet(bet);
+      if (error) {
+        setResult('higherLowerResult', error);
+        return;
+      }
+
+      chips -= bet;
+      saveData();
+
+      const first = randomInt(40, 120);
+      higherLowerState.active = true;
+      higherLowerState.bet = bet;
+      higherLowerState.firstNumber = first;
+
+      document.getElementById('hlCurrentNumber').textContent = first;
+      setResult('higherLowerResult', `Первое число: ${first}\nТеперь выбери — следующее будет больше или меньше.`);
+    }
+
+    function guessHigher(choice) {
+      if (!higherLowerState.active) {
+        setResult('higherLowerResult', 'Сначала нажми «Получить первое число».');
+        return;
+      }
+
+      const first = higherLowerState.firstNumber;
+      const next = randomInt(40, 120);
+
+      document.getElementById('hlCurrentNumber').textContent = next;
+
+      let won = false;
+
+      if (next > first && choice === 'more') won = true;
+      if (next < first && choice === 'less') won = true;
+
+      if (next === first) won = false;
+
+      if (won) {
+        const win = higherLowerState.bet * 2;
+        chips += win;
+        saveData();
+        setResult('higherLowerResult', `Первое число было ${first}, выпало ${next}.\n✅ Ты угадал и получил ${formatNumber(win)} фишек!`);
+      } else {
+        setResult('higherLowerResult', `Первое число было ${first}, выпало ${next}.\n❌ Ты проиграл ${formatNumber(higherLowerState.bet)} фишек.`);
+      }
+
+      higherLowerState.active = false;
+      higherLowerState.bet = 0;
+      higherLowerState.firstNumber = null;
+    }
+
+    async function spinJackpot() {
+      const bet = Number(document.getElementById('jackpotBet').value);
+      const error = validateBet(bet);
+      if (error) {
+        setResult('jackpotResult', error);
+        return;
+      }
+
+      chips -= bet;
+      saveData();
+
+      const symbols = ["🍒", "🍊", "🍇", "🍑", "🍋", "🍉", "⭐", "💎"];
+      const slot1 = document.getElementById('slot1');
+      const slot2 = document.getElementById('slot2');
+      const slot3 = document.getElementById('slot3');
+
+      for (let i = 0; i < 14; i++) {
+        slot1.textContent = symbols[randomInt(0, symbols.length - 1)];
+        slot2.textContent = symbols[randomInt(0, symbols.length - 1)];
+        slot3.textContent = symbols[randomInt(0, symbols.length - 1)];
+        await delay(90);
+      }
+
+      const result = [
+        symbols[randomInt(0, symbols.length - 1)],
+        symbols[randomInt(0, symbols.length - 1)],
+        symbols[randomInt(0, symbols.length - 1)]
+      ];
+
+      slot1.textContent = result[0];
+      slot2.textContent = result[1];
+      slot3.textContent = result[2];
+
+      const combo = result.join('');
+      let multiplier = 0;
+
+      if (combo === "🍒🍒🍒") multiplier = 100;
+      else if (combo === "🍊🍊🍊") multiplier = 20;
+      else if (combo === "🍇🍇🍇") multiplier = 5;
+      else if (combo === "🍑🍑🍑") multiplier = 2;
+
+      if (multiplier > 0) {
+        const win = bet * multiplier;
+        chips += win;
+        saveData();
+        setResult('jackpotResult', `Выпало: ${combo}\n🎉 Джекпот! Множитель x${multiplier}.\nТы получил ${formatNumber(win)} фишек.`);
+      } else {
+        setResult('jackpotResult', `Выпало: ${combo}\n😢 Не повезло. Ты проиграл ${formatNumber(bet)} фишек.`);
+      }
+    }
+
+    updateBalances();
   </script>
 </body>
 </html>
