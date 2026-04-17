@@ -3,710 +3,873 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Urbaev Casino</title>
+  <title>Угадай кто — Urbaev Edition</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      min-height: 100%;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background:
-        radial-gradient(circle at top, #243b55 0%, #141e30 45%, #0a0f1f 100%);
-      color: white;
+      background: linear-gradient(-45deg, #5b2cff, #ff4fd8, #32d7ff, #74ff8a);
+      background-size: 400% 400%;
+      animation: gradientFlow 12s ease infinite;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .app {
       min-height: 100vh;
+      padding: 18px;
+    }
+
+    .glass {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+    }
+
+    .menu-screen {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px;
+      border-radius: 28px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: clamp(28px, 5vw, 54px);
+      margin: 10px 0 8px;
+      text-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    }
+
+    .subtitle {
+      text-align: center;
+      opacity: 0.95;
+      font-size: 17px;
+      margin-bottom: 28px;
+    }
+
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .mode-card {
+      border-radius: 24px;
+      padding: 20px;
+      min-height: 170px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.22);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .mode-emoji {
+      font-size: 42px;
+      margin-bottom: 8px;
+    }
+
+    .mode-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .mode-desc {
+      opacity: 0.95;
+      line-height: 1.4;
+      font-size: 15px;
+    }
+
+    .game-screen {
+      display: none;
+      max-width: 1400px;
+      margin: 0 auto;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .left-panel {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .right-panel {
+      width: 320px;
+      padding: 18px;
+      border-radius: 26px;
+      position: sticky;
+      top: 16px;
     }
 
     .topbar {
       display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      padding: 14px 18px;
-      background: rgba(0,0,0,0.25);
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(8px);
-    }
-
-    .title {
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: 1px;
-    }
-
-    .balances {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .pill {
-      background: rgba(255,255,255,0.1);
-      padding: 8px 12px;
-      border-radius: 999px;
-      font-weight: bold;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 22px;
-    }
-
-    .menu {
-      display: flex;
-      gap: 14px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      border-radius: 14px;
-      padding: 12px 16px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.18s ease;
-    }
-
-    button:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.06);
-    }
-
-    .btn-main {
-      background: linear-gradient(135deg, #ffcc00, #ff9f1a);
-      color: #1c1300;
-      box-shadow: 0 10px 24px rgba(255, 180, 0, 0.2);
-    }
-
-    .btn-alt {
-      background: linear-gradient(135deg, #4facfe, #00f2fe);
-      color: #06223a;
-      box-shadow: 0 10px 24px rgba(0, 200, 255, 0.16);
-    }
-
-    .btn-danger {
-      background: linear-gradient(135deg, #ff6b6b, #ff3b3b);
-      color: white;
-    }
-
-    .btn-green {
-      background: linear-gradient(135deg, #55efc4, #00b894);
-      color: #052c22;
-    }
-
-    .section {
-      display: none;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 22px;
-      padding: 20px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.2);
-    }
-
-    .section.active {
-      display: block;
-      animation: fade 0.3s ease;
-    }
-
-    @keyframes fade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 24px;
-    }
-
-    .muted {
-      color: #d8e3ff;
-      opacity: 0.9;
-      line-height: 1.5;
-    }
-
-    .field {
-      margin: 12px 0;
-    }
-
-    input {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: none;
-      outline: none;
-      font-size: 16px;
-      background: rgba(255,255,255,0.92);
-      color: #111;
-    }
-
-    .result {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.22);
-      min-height: 52px;
-      line-height: 1.5;
-      white-space: pre-line;
-    }
-
-    .game-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin: 14px 0;
-    }
-
-    .roulette-players {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 10px;
-      margin-top: 14px;
-    }
-
-    .player-box {
-      background: rgba(255,255,255,0.08);
-      border-radius: 14px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.06);
-      font-weight: bold;
-    }
-
-    .highlight {
-      outline: 3px solid #ffd54f;
-      transform: scale(1.03);
-    }
-
-    .slot-machine {
-      display: flex;
       gap: 12px;
-      justify-content: center;
-      align-items: center;
-      margin: 18px 0;
-      flex-wrap: wrap;
+      margin-bottom: 14px;
+      padding: 16px 18px;
+      border-radius: 22px;
     }
 
-    .slot {
-      width: 90px;
-      height: 90px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 42px;
-      border: 2px solid rgba(255,255,255,0.1);
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+    .topbar h2 {
+      margin: 0;
+      font-size: clamp(20px, 3vw, 32px);
     }
 
-    .big-number {
-      font-size: 52px;
-      font-weight: 900;
-      text-align: center;
-      margin: 14px 0;
-      color: #ffd76a;
-      text-shadow: 0 0 20px rgba(255, 215, 106, 0.25);
-    }
-
-    .small-note {
+    .small-text {
       font-size: 14px;
-      opacity: 0.85;
-      margin-top: 8px;
-    }
-
-    .home-box {
-      text-align: center;
-      padding: 30px 20px;
-    }
-
-    .home-box h2 {
-      font-size: 34px;
-      margin-bottom: 10px;
-    }
-
-    .home-box p {
-      font-size: 18px;
       opacity: 0.92;
     }
 
-    .home-actions {
+    .building {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border-radius: 28px;
+    }
+
+    .apartment {
+      min-height: 140px;
+      border-radius: 22px;
+      padding: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: 0.18s ease;
       display: flex;
-      justify-content: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      margin-top: 24px;
+      flex-direction: column;
+      justify-content: space-between;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      overflow: hidden;
     }
 
-    .tag {
-      display: inline-block;
-      margin-top: 10px;
-      background: rgba(255, 214, 10, 0.13);
-      color: #ffe58d;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 14px;
+    .apartment:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .ap-number {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 6px;
+    }
+
+    .ap-name {
+      font-size: 16px;
       font-weight: bold;
+      line-height: 1.15;
+      margin-bottom: 8px;
     }
 
-    @media (max-width: 700px) {
-      .title { font-size: 22px; }
-      .big-number { font-size: 40px; }
+    .ap-desc {
+      font-size: 13px;
+      opacity: 0.95;
+      line-height: 1.35;
+      max-height: 70px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .selected-evict {
+      outline: 3px solid #ffd54a;
+      box-shadow: 0 0 0 5px rgba(255,213,74,0.2);
+    }
+
+    .evicted {
+      filter: grayscale(0.2);
+      background: rgba(160, 20, 20, 0.58) !important;
+      border-color: rgba(255,255,255,0.24);
+    }
+
+    .evicted .ap-name,
+    .evicted .ap-desc,
+    .evicted .ap-number {
+      opacity: 0.5;
+    }
+
+    .evicted-label {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 3px 10px rgba(0,0,0,0.45);
+    }
+
+    .panel-title {
+      font-size: 21px;
+      font-weight: bold;
+      margin: 0 0 14px;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      border-radius: 18px;
+      padding: 14px 14px;
+      margin-bottom: 12px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #fff;
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.24);
+    }
+
+    .btn.active {
+      background: rgba(255, 197, 61, 0.36);
+      border-color: rgba(255, 227, 136, 0.95);
+    }
+
+    .btn.red {
+      background: rgba(255, 86, 86, 0.28);
+    }
+
+    .btn.green {
+      background: rgba(64, 228, 132, 0.28);
+    }
+
+    .leader-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 22px;
+      min-height: 135px;
+      text-align: center;
+    }
+
+    .leader-box h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .leader-name {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .leader-desc {
+      font-size: 14px;
+      line-height: 1.35;
+      opacity: 0.95;
+    }
+
+    .bottom-hero {
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: 24px;
+      text-align: center;
+    }
+
+    .bottom-hero-title {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+
+    .bottom-hero-name {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .bottom-hero-desc {
+      font-size: 15px;
+      max-width: 850px;
+      margin: 0 auto;
+      line-height: 1.45;
+    }
+
+    .modal-wrap {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 999;
+    }
+
+    .modal {
+      width: min(980px, 100%);
+      max-height: 85vh;
+      overflow: hidden;
+      border-radius: 28px;
+      padding: 18px;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .close-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      font-size: 22px;
+      color: #fff;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.22);
+    }
+
+    .leader-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 12px;
+      max-height: calc(85vh - 100px);
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .leader-option {
+      padding: 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      transition: 0.16s ease;
+    }
+
+    .leader-option:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.18);
+    }
+
+    .leader-option-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .leader-option-desc {
+      font-size: 14px;
+      line-height: 1.35;
+      opacity: 0.95;
+    }
+
+    .rules-box {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 22px;
+      font-size: 14px;
+      line-height: 1.45;
+      opacity: 0.98;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 1100px) {
+      .game-screen {
+        flex-direction: column;
+      }
+
+      .right-panel {
+        width: 100%;
+        position: static;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .modes {
+        grid-template-columns: 1fr;
+      }
+
+      .building {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .leader-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .building {
+        grid-template-columns: 1fr;
+      }
+
+      .apartment {
+        min-height: 125px;
+      }
+
+      .bottom-hero-name {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="title">🎰 Urbaev Casino</div>
-    <div class="balances">
-      <div class="pill">💰 Сомы: <span id="somDisplay">10</span></div>
-      <div class="pill">🪙 Фишки: <span id="chipsDisplay">100000</span></div>
+  <div class="app">
+    <!-- MENU -->
+    <div id="menuScreen" class="menu-screen glass">
+      <div class="title">🎭 Угадай Кто — Домик Версия</div>
+      <div class="subtitle">
+        Выбирай тему, заходи в домик, назначай главу и выселяй тех, кто не подходит 👀
+      </div>
+
+      <div class="modes">
+        <div class="mode-card glass" onclick="startGame('masha')">
+          <div class="mode-emoji">🐻</div>
+          <div class="mode-title">Маша и Медведь</div>
+          <div class="mode-desc">25 карточек с героями и описаниями в стиле мультфильма.</div>
+        </div>
+
+        <div class="mode-card glass" onclick="startGame('popular')">
+          <div class="mode-emoji">⭐</div>
+          <div class="mode-title">Популярные люди</div>
+          <div class="mode-desc">25 известных типажей и персонажей по описанию.</div>
+        </div>
+
+        <div class="mode-card glass" onclick="startGame('cats')">
+          <div class="mode-emoji">🐱</div>
+          <div class="mode-title">Котики</div>
+          <div class="mode-desc">25 котиков с разным характером, цветом и привычками.</div>
+        </div>
+
+        <div class="mode-card glass" onclick="startGame('gov')">
+          <div class="mode-emoji">🏛️</div>
+          <div class="mode-title">Гос. служащие</div>
+          <div class="mode-desc">25 серьезных ролей и должностей для смешной версии игры.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div id="gameScreen" class="game-screen">
+      <div class="left-panel">
+        <div class="topbar glass">
+          <div>
+            <h2 id="gameTitle">Игра</h2>
+            <div class="small-text" id="gameInfo">25 карточек • выбери главу • выселяй неподходящих</div>
+          </div>
+          <div class="small-text" id="selectedCountInfo">Выбрано для выселения: 0</div>
+        </div>
+
+        <div id="building" class="building glass"></div>
+
+        <div class="bottom-hero glass">
+          <div class="bottom-hero-title">🎯 Главная роль снизу в середине домика</div>
+          <div id="bottomHeroName" class="bottom-hero-name">Глава не выбран</div>
+          <div id="bottomHeroDesc" class="bottom-hero-desc">
+            Нажми справа кнопку <b>“Выбрать главу”</b>, чтобы назначить своего персонажа.
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel glass">
+        <div class="panel-title">Управление</div>
+
+        <button class="btn" onclick="openLeaderModal()">👑 Выбрать главу</button>
+        <button id="evictBtn" class="btn red" onclick="toggleEvictMode()">🚪 Выселить</button>
+        <button id="applyEvictBtn" class="btn hidden" onclick="applyEviction()">✅ Применить выселение</button>
+        <button class="btn green" onclick="resetBoard()">🔄 Сбросить поле</button>
+        <button class="btn" onclick="goHome()">⬅️ Назад в меню</button>
+
+        <div class="leader-box glass">
+          <h3>Текущий глава</h3>
+          <div id="leaderName" class="leader-name">Не выбран</div>
+          <div id="leaderDesc" class="leader-desc">Выбери одного из 25 персонажей.</div>
+        </div>
+
+        <div class="rules-box glass">
+          <b>Как играть:</b><br>
+          1. Встретились вживую с другом.<br>
+          2. Каждый выбирает себе главу.<br>
+          3. По очереди задаете вопросы “да/нет”.<br>
+          4. Неподходящих выселяете из домика.<br>
+          5. Кто первым угадает главу — тот победил 🎉
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="container">
-    <div class="menu">
-      <button class="btn-main" onclick="showSection('homeSection')">🏠 Лобби</button>
-      <button class="btn-alt" onclick="showSection('shopSection')">🛒 Магазин</button>
-      <button class="btn-main" onclick="showSection('gamesSection')">🎮 Игра</button>
-    </div>
-
-    <div id="homeSection" class="section active">
-      <div class="home-box">
-        <h2>Добро пожаловать в казино</h2>
-        <p>Здесь можно менять сомы на фишки, играть против удачи и соревноваться с ботами.</p>
-        <div class="tag">Курс: 1 сом = 10.000 фишек</div>
-        <div class="home-actions">
-          <button class="btn-alt" onclick="showSection('shopSection')">Открыть магазин</button>
-          <button class="btn-main" onclick="showSection('gamesSection')">Начать играть</button>
-        </div>
+  <!-- MODAL -->
+  <div id="leaderModal" class="modal-wrap">
+    <div class="modal glass">
+      <div class="modal-head">
+        <h3>👑 Выбери главу</h3>
+        <button class="close-btn" onclick="closeLeaderModal()">✕</button>
       </div>
-    </div>
-
-    <div id="shopSection" class="section">
-      <h2>🛒 Магазин обмена</h2>
-      <p class="muted">Тут можно обменять валюту. Курс фиксированный: <b>1 сом = 10.000 фишек</b>.</p>
-
-      <div class="cards">
-        <div class="card">
-          <h3>Сомы → фишки</h3>
-          <div class="field">
-            <input id="buyChipsSomInput" type="number" min="1" placeholder="Сколько сомов обменять?" />
-          </div>
-          <button class="btn-green" onclick="buyChips()">Купить фишки</button>
-          <div class="small-note">Пример: 2 сома = 20.000 фишек</div>
-        </div>
-
-        <div class="card">
-          <h3>Фишки → сомы</h3>
-          <div class="field">
-            <input id="sellChipsInput" type="number" min="10000" step="10000" placeholder="Сколько фишек обменять?" />
-          </div>
-          <button class="btn-main" onclick="sellChips()">Обменять на сомы</button>
-          <div class="small-note">Минимум для обмена: 10.000 фишек = 1 сом</div>
-        </div>
-      </div>
-
-      <div id="shopResult" class="result">Добро пожаловать в магазин обмена.</div>
-    </div>
-
-    <div id="gamesSection" class="section">
-      <h2>🎮 Игры</h2>
-      <p class="muted">Выбирай игру. Лимит ставки для всех игр: от <b>100</b> до <b>10.000</b> фишек.</p>
-
-      <div class="cards">
-        <div class="card">
-          <h3>🎯 Рулетка 1 из 5</h3>
-          <p class="muted">
-            Ты заходишь в комнату, потом 4 секунды набираются боты.
-            Когда все 5 игроков собрались, система случайно выбирает победителя.
-            Победитель забирает весь банк.
-          </p>
-
-          <div class="field">
-            <input id="rouletteBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
-          </div>
-
-          <button id="rouletteStartBtn" class="btn-main" onclick="startRoulette()">Играть в рулетку</button>
-
-          <div id="rouletteStatus" class="result">Ожидание начала игры.</div>
-          <div id="roulettePlayers" class="roulette-players"></div>
-        </div>
-
-        <div class="card">
-          <h3>🔼🔽 Больше или меньше</h3>
-          <p class="muted">
-            Сначала выпадает число от 40 до 120.
-            Потом ты выбираешь — следующее будет больше или меньше.
-          </p>
-
-          <div class="field">
-            <input id="higherLowerBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
-          </div>
-
-          <button class="btn-alt" onclick="startHigherLower()">Получить первое число</button>
-
-          <div class="big-number" id="hlCurrentNumber">?</div>
-
-          <div class="game-buttons">
-            <button class="btn-green" onclick="guessHigher('more')">Будет больше</button>
-            <button class="btn-danger" onclick="guessHigher('less')">Будет меньше</button>
-          </div>
-
-          <div id="higherLowerResult" class="result">Сначала нажми «Получить первое число».</div>
-        </div>
-
-        <div class="card">
-          <h3>🍒 Jackpot</h3>
-          <p class="muted">
-            Выигрыши:
-            <br>🍒🍒🍒 = x100
-            <br>🍊🍊🍊 = x20
-            <br>🍇🍇🍇 = x5
-            <br>🍑🍑🍑 = x2
-          </p>
-
-          <div class="field">
-            <input id="jackpotBet" type="number" min="100" max="10000" placeholder="Ставка от 100 до 10000" />
-          </div>
-
-          <div class="slot-machine">
-            <div class="slot" id="slot1">❔</div>
-            <div class="slot" id="slot2">❔</div>
-            <div class="slot" id="slot3">❔</div>
-          </div>
-
-          <button class="btn-main" onclick="spinJackpot()">Крутить Jackpot</button>
-
-          <div id="jackpotResult" class="result">Сделай ставку и крути.</div>
-        </div>
-      </div>
+      <div id="leaderGrid" class="leader-grid"></div>
     </div>
   </div>
 
   <script>
-    const CHIP_RATE = 10000;
-    const MIN_BET = 100;
-    const MAX_BET = 10000;
+    const datasets = {
+      masha: {
+        title: "🐻 Маша и Медведь",
+        items: [
+          { name: "Маша", desc: "Маленькая, очень активная, любит шуметь, вечно придумывает приключения." },
+          { name: "Медведь", desc: "Большой, добрый, живет в доме, любит спокойствие и порядок." },
+          { name: "Панда", desc: "Маленький, милый, часто бывает рядом с Машей, любит играть." },
+          { name: "Заяц", desc: "Небольшого роста, шустрый, часто появляется возле огорода." },
+          { name: "Волк 1", desc: "Серый, хитрый, живет не в домике, иногда попадает в смешные ситуации." },
+          { name: "Волк 2", desc: "Серый, похож на другого волка, часто действует в паре." },
+          { name: "Белка", desc: "Маленькая, рыжеватая, быстрая, часто сидит на деревьях." },
+          { name: "Ёж", desc: "Маленький, колючий, не очень высокий, лесной житель." },
+          { name: "Тигр", desc: "Крупный, полосатый, дружит с Медведем, любит выступать." },
+          { name: "Пингвин", desc: "Невысокий, смешной, не похож на лесных жителей, связан с холодом." },
+          { name: "Коза", desc: "Домашнее животное, есть рога, не хищник." },
+          { name: "Курица", desc: "Небольшая, домашняя, пернатая, не умеет нормально летать." },
+          { name: "Петух", desc: "Яркий, пернатый, может громко кричать утром." },
+          { name: "Свинка", desc: "Розоватая, домашняя, любит покушать." },
+          { name: "Овца", desc: "Пушистая, светлая, спокойная, домашняя." },
+          { name: "Собака", desc: "Верная, домашняя, может охранять, не лесная." },
+          { name: "Кот", desc: "Небольшой, пушистый, домашний, любит хитрить." },
+          { name: "Лиса", desc: "Рыжая, хитрая, лесная, не домашняя." },
+          { name: "Медведица", desc: "Крупная, лесная, похожа на Медведя, но это другой персонаж." },
+          { name: "Пчела", desc: "Очень маленькая, летает, может ужалить." },
+          { name: "Лягушка", desc: "Маленькая, зеленая, связана с водой." },
+          { name: "Кролик", desc: "Небольшой, ушастый, быстрый, похож на зайца." },
+          { name: "Поросенок", desc: "Маленький, розовый, домашний, младше свинки." },
+          { name: "Утка", desc: "Пернатая, связана с водой, может плавать." },
+          { name: "Сова", desc: "Птица, связана с ночью, большие глаза." }
+        ]
+      },
 
-    let som = Number(localStorage.getItem('casino_som')) || 10;
-    let chips = Number(localStorage.getItem('casino_chips')) || 100000;
+      popular: {
+        title: "⭐ Популярные люди",
+        items: [
+          { name: "Певец", desc: "Выступает на сцене, связан с музыкой, часто с микрофоном." },
+          { name: "Актер", desc: "Снимается в фильмах и сериалах, узнаваемый по ролям." },
+          { name: "Блогер", desc: "Снимает видео, ведет соцсети, часто сидит в интернете." },
+          { name: "Футболист", desc: "Спортсмен, связан с мячом, часто в форме." },
+          { name: "Боксер", desc: "Сильный, спортивный, участвует в поединках." },
+          { name: "Рэпер", desc: "Связан с музыкой, часто читает под бит." },
+          { name: "Телеведущий", desc: "Работает перед камерой, часто ведет шоу." },
+          { name: "Комик", desc: "Шутит, выступает ради смеха, веселый образ." },
+          { name: "Танцор", desc: "Любит сцену, связан с движением и ритмом." },
+          { name: "Модель", desc: "Показывает одежду, связана с модой и фото." },
+          { name: "Стример", desc: "Ведет трансляции, играет или общается в прямом эфире." },
+          { name: "Гонщик", desc: "Любит скорость, связан с машинами и трассой." },
+          { name: "Шеф-повар", desc: "Готовит еду, связан с кухней и блюдами." },
+          { name: "Учёный", desc: "Умный, связан с открытиями, исследованиями и наукой." },
+          { name: "Писатель", desc: "Пишет книги, рассказы или большие тексты." },
+          { name: "Художник", desc: "Рисует, связан с красками, кистями и картинами." },
+          { name: "Фокусник", desc: "Удивляет людей трюками и иллюзиями." },
+          { name: "Космонавт", desc: "Связан с космосом, ракетами и полетами." },
+          { name: "Политик", desc: "Часто в костюме, связан с государством и важными решениями." },
+          { name: "Журналист", desc: "Ищет новости, берет интервью, рассказывает о событиях." },
+          { name: "DJ", desc: "Связан с музыкой, ставит треки, работает на вечеринках." },
+          { name: "Бизнесмен", desc: "Связан с деньгами, делами, компаниями и переговорами." },
+          { name: "Тиктокер", desc: "Снимает короткие видео, популярен в соцсетях." },
+          { name: "Дизайнер", desc: "Создает внешний вид вещей, сайтов, одежды или картинок." },
+          { name: "Путешественник", desc: "Часто в разъездах, любит новые страны и приключения." }
+        ]
+      },
 
-    let rouletteBusy = false;
+      cats: {
+        title: "🐱 Котики",
+        items: [
+          { name: "Рыжий котик", desc: "Рыжего цвета, любит лежать на солнце и лениться." },
+          { name: "Черный котик", desc: "Темного цвета, тихий, часто прячется в тени." },
+          { name: "Белый котик", desc: "Светлый, чистый, пушистый и спокойный." },
+          { name: "Серый котик", desc: "Обычный сероватый, любит смотреть в окно." },
+          { name: "Пушистик", desc: "Очень пушистый, выглядит круглым и мягким." },
+          { name: "Лысик", desc: "Почти без шерсти, необычный внешний вид." },
+          { name: "Толстячок", desc: "Любит поесть, ленивый, крупнее других." },
+          { name: "Хитрый кот", desc: "Часто ворует еду, быстро убегает, умный." },
+          { name: "Соня", desc: "Почти всегда спит, редко играет." },
+          { name: "Прыгун", desc: "Очень активный, любит бегать и прыгать." },
+          { name: "Ночной кот", desc: "Особенно бодрый ночью, днем чаще отдыхает." },
+          { name: "Добряк", desc: "Ласковый, любит людей, спокойно сидит рядом." },
+          { name: "Царапка", desc: "Не любит лишние прикосновения, может царапнуть." },
+          { name: "Охотник", desc: "Любит ловить все движущееся, очень внимательный." },
+          { name: "Котёнок", desc: "Совсем маленький, игривый и шустрый." },
+          { name: "Старичок", desc: "Уже взрослый, двигается спокойнее и медленнее." },
+          { name: "Громкий кот", desc: "Часто мяукает, требует внимания." },
+          { name: "Молчун", desc: "Редко подает голос, ведет себя тихо." },
+          { name: "Полосатик", desc: "Имеет полоски на шерсти, выглядит ярко." },
+          { name: "Пятнышко", desc: "Шерсть с пятнами, заметный окрас." },
+          { name: "Хвостатый", desc: "Особенно длинный и заметный хвост." },
+          { name: "Коротколапик", desc: "Невысокий, короткие лапки, смешно бегает." },
+          { name: "Обжора", desc: "Любит еду больше игр и сна." },
+          { name: "Вредина", desc: "Иногда специально мешает, скидывает вещи." },
+          { name: "Лапочка", desc: "Очень милый, вызывает желание сразу погладить." }
+        ]
+      },
 
-    let higherLowerState = {
-      active: false,
-      bet: 0,
-      firstNumber: null
+      gov: {
+        title: "🏛️ Гос. служащие",
+        items: [
+          { name: "Президент", desc: "Самая высокая должность в государстве, принимает важные решения." },
+          { name: "Министр", desc: "Руководит отдельной важной сферой или ведомством." },
+          { name: "Мэр", desc: "Отвечает за город и его развитие." },
+          { name: "Депутат", desc: "Участвует в обсуждении и принятии законов." },
+          { name: "Судья", desc: "Работает в суде, принимает решения по делам." },
+          { name: "Прокурор", desc: "Связан с законами, обвинением и проверками." },
+          { name: "Полицейский", desc: "Следит за порядком, носит форму." },
+          { name: "Следователь", desc: "Разбирается в делах, ищет улики и факты." },
+          { name: "Военный", desc: "Связан с армией, дисциплиной и защитой страны." },
+          { name: "Пограничник", desc: "Следит за границами государства." },
+          { name: "Таможенник", desc: "Проверяет людей и грузы на границе." },
+          { name: "Налоговик", desc: "Связан с налогами, финансами и проверками." },
+          { name: "Пожарный", desc: "Спасает людей и тушит пожары." },
+          { name: "Спасатель", desc: "Помогает в опасных ситуациях, выручает людей." },
+          { name: "Доктор гос. больницы", desc: "Лечит людей, работает в государственной системе." },
+          { name: "Учитель гос. школы", desc: "Преподает детям, работает в школе." },
+          { name: "Директор школы", desc: "Руководит школой и отвечает за порядок." },
+          { name: "Почтальон", desc: "Разносит письма и посылки." },
+          { name: "Секретарь администрации", desc: "Работает с бумагами, приемом и организацией." },
+          { name: "Гос. юрист", desc: "Разбирается в праве и документах." },
+          { name: "Инспектор", desc: "Проверяет соблюдение правил и норм." },
+          { name: "Архивариус", desc: "Хранит документы и старые записи." },
+          { name: "Губернатор", desc: "Руководит большим регионом, выше городского уровня." },
+          { name: "Посол", desc: "Связан с другими странами и дипломатией." },
+          { name: "Референт", desc: "Помогает важному начальнику с бумагами и делами." }
+        ]
+      }
     };
 
-    const botNames = [
-      "Макс", "Депчик", "Ричи", "Лаки", "Молния", "Фартовый",
-      "Бустер", "Смайл", "Зевс", "Кэшик", "Оскар", "Тузик"
-    ];
+    let currentMode = null;
+    let currentItems = [];
+    let leaderIndex = null;
+    let evictMode = false;
+    let selectedForEvict = new Set();
 
-    function saveData() {
-      localStorage.setItem('casino_som', som);
-      localStorage.setItem('casino_chips', chips);
-      updateBalances();
+    const menuScreen = document.getElementById("menuScreen");
+    const gameScreen = document.getElementById("gameScreen");
+    const building = document.getElementById("building");
+    const gameTitle = document.getElementById("gameTitle");
+    const gameInfo = document.getElementById("gameInfo");
+    const leaderName = document.getElementById("leaderName");
+    const leaderDesc = document.getElementById("leaderDesc");
+    const bottomHeroName = document.getElementById("bottomHeroName");
+    const bottomHeroDesc = document.getElementById("bottomHeroDesc");
+    const leaderModal = document.getElementById("leaderModal");
+    const leaderGrid = document.getElementById("leaderGrid");
+    const evictBtn = document.getElementById("evictBtn");
+    const applyEvictBtn = document.getElementById("applyEvictBtn");
+    const selectedCountInfo = document.getElementById("selectedCountInfo");
+
+    function startGame(modeKey) {
+      currentMode = modeKey;
+      currentItems = datasets[modeKey].items.map((item, index) => ({
+        ...item,
+        id: index,
+        evicted: false
+      }));
+
+      leaderIndex = null;
+      evictMode = false;
+      selectedForEvict.clear();
+
+      menuScreen.style.display = "none";
+      gameScreen.style.display = "flex";
+
+      gameTitle.textContent = datasets[modeKey].title;
+      gameInfo.textContent = "25 карточек • выбери главу • выселяй неподходящих";
+      resetLeaderUI();
+      updateEvictUI();
+      renderBuilding();
+      renderLeaderOptions();
     }
 
-    function updateBalances() {
-      document.getElementById('somDisplay').textContent = formatNumber(som);
-      document.getElementById('chipsDisplay').textContent = formatNumber(chips);
+    function goHome() {
+      menuScreen.style.display = "block";
+      gameScreen.style.display = "none";
+      closeLeaderModal();
     }
 
-    function formatNumber(num) {
-      return Number(num).toLocaleString('ru-RU');
-    }
+    function renderBuilding() {
+      building.innerHTML = "";
 
-    function showSection(id) {
-      document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+      currentItems.forEach((item, index) => {
+        const card = document.createElement("div");
+        card.className = "apartment";
 
-    function setResult(id, text) {
-      document.getElementById(id).textContent = text;
-    }
+        if (item.evicted) {
+          card.classList.add("evicted");
+        }
 
-    function validateBet(bet) {
-      if (!Number.isFinite(bet)) return "Введите ставку.";
-      if (bet < MIN_BET) return `Минимальная ставка: ${MIN_BET} фишек.`;
-      if (bet > MAX_BET) return `Максимальная ставка: ${MAX_BET} фишек.`;
-      if (bet > chips) return "У тебя недостаточно фишек.";
-      return null;
-    }
+        if (selectedForEvict.has(index)) {
+          card.classList.add("selected-evict");
+        }
 
-    function buyChips() {
-      const input = document.getElementById('buyChipsSomInput');
-      const value = Number(input.value);
+        card.innerHTML = `
+          <div>
+            <div class="ap-number">Квартира ${index + 1}</div>
+            <div class="ap-name">${item.name}</div>
+            <div class="ap-desc">${item.desc}</div>
+          </div>
+          ${item.evicted ? '<div class="evicted-label">Выселен</div>' : ""}
+        `;
 
-      if (!Number.isFinite(value) || value <= 0) {
-        setResult('shopResult', 'Введи нормальное количество сомов.');
-        return;
-      }
-
-      if (!Number.isInteger(value)) {
-        setResult('shopResult', 'Обмен сомов только целыми числами.');
-        return;
-      }
-
-      if (value > som) {
-        setResult('shopResult', 'У тебя нет столько сомов.');
-        return;
-      }
-
-      const bought = value * CHIP_RATE;
-      som -= value;
-      chips += bought;
-      saveData();
-
-      setResult('shopResult', `Ты обменял ${formatNumber(value)} сом на ${formatNumber(bought)} фишек.`);
-      input.value = "";
-    }
-
-    function sellChips() {
-      const input = document.getElementById('sellChipsInput');
-      const value = Number(input.value);
-
-      if (!Number.isFinite(value) || value <= 0) {
-        setResult('shopResult', 'Введи нормальное количество фишек.');
-        return;
-      }
-
-      if (value % CHIP_RATE !== 0) {
-        setResult('shopResult', 'Менять фишки можно только кратно 10.000.');
-        return;
-      }
-
-      if (value > chips) {
-        setResult('shopResult', 'У тебя нет столько фишек.');
-        return;
-      }
-
-      const gotSom = value / CHIP_RATE;
-      chips -= value;
-      som += gotSom;
-      saveData();
-
-      setResult('shopResult', `Ты обменял ${formatNumber(value)} фишек на ${formatNumber(gotSom)} сом.`);
-      input.value = "";
-    }
-
-    function randomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-
-    function pickRandomBots(count) {
-      const shuffled = [...botNames].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, count);
-    }
-
-    async function startRoulette() {
-      if (rouletteBusy) return;
-
-      const bet = Number(document.getElementById('rouletteBet').value);
-      const error = validateBet(bet);
-      if (error) {
-        setResult('rouletteStatus', error);
-        return;
-      }
-
-      rouletteBusy = true;
-      document.getElementById('rouletteStartBtn').disabled = true;
-      const playersWrap = document.getElementById('roulettePlayers');
-      playersWrap.innerHTML = "";
-
-      chips -= bet;
-      saveData();
-
-      const allPlayers = ["Ты"];
-      setResult('rouletteStatus', `Ты вошел в комнату со ставкой ${formatNumber(bet)} фишек.\nИщем игроков...`);
-
-      renderPlayers(allPlayers);
-
-      const bots = pickRandomBots(4);
-
-      for (let i = 0; i < bots.length; i++) {
-        await delay(1000);
-        allPlayers.push(bots[i]);
-        renderPlayers(allPlayers);
-        setResult(
-          'rouletteStatus',
-          `Игроки набираются... ${allPlayers.length}/5`
-        );
-      }
-
-      await delay(600);
-
-      const bank = bet * 5;
-      setResult('rouletteStatus', `Все игроки собраны.\nОбщий банк: ${formatNumber(bank)} фишек.\nКрутим рулетку...`);
-
-      const boxes = [...playersWrap.children];
-      let finalIndex = randomInt(0, 4);
-
-      for (let i = 0; i < 14; i++) {
-        const idx = i % boxes.length;
-        boxes.forEach(b => b.classList.remove('highlight'));
-        boxes[idx].classList.add('highlight');
-        await delay(130);
-      }
-
-      boxes.forEach(b => b.classList.remove('highlight'));
-      boxes[finalIndex].classList.add('highlight');
-
-      const winner = allPlayers[finalIndex];
-
-      if (winner === "Ты") {
-        chips += bank;
-        saveData();
-        setResult('rouletteStatus', `🎉 Победитель: ТЫ!\nТы забрал весь банк: ${formatNumber(bank)} фишек.`);
-      } else {
-        setResult('rouletteStatus', `😢 Победитель: ${winner}\nОн забрал банк: ${formatNumber(bank)} фишек.`);
-      }
-
-      rouletteBusy = false;
-      document.getElementById('rouletteStartBtn').disabled = false;
-    }
-
-    function renderPlayers(arr) {
-      const wrap = document.getElementById('roulettePlayers');
-      wrap.innerHTML = "";
-      arr.forEach(name => {
-        const div = document.createElement('div');
-        div.className = 'player-box';
-        div.textContent = name;
-        wrap.appendChild(div);
+        card.onclick = () => onApartmentClick(index);
+        building.appendChild(card);
       });
     }
 
-    function delay(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    function onApartmentClick(index) {
+      if (!evictMode) return;
+      if (currentItems[index].evicted) return;
 
-    function startHigherLower() {
-      const bet = Number(document.getElementById('higherLowerBet').value);
-      const error = validateBet(bet);
-      if (error) {
-        setResult('higherLowerResult', error);
-        return;
-      }
-
-      chips -= bet;
-      saveData();
-
-      const first = randomInt(40, 120);
-      higherLowerState.active = true;
-      higherLowerState.bet = bet;
-      higherLowerState.firstNumber = first;
-
-      document.getElementById('hlCurrentNumber').textContent = first;
-      setResult('higherLowerResult', `Первое число: ${first}\nТеперь выбери — следующее будет больше или меньше.`);
-    }
-
-    function guessHigher(choice) {
-      if (!higherLowerState.active) {
-        setResult('higherLowerResult', 'Сначала нажми «Получить первое число».');
-        return;
-      }
-
-      const first = higherLowerState.firstNumber;
-      const next = randomInt(40, 120);
-
-      document.getElementById('hlCurrentNumber').textContent = next;
-
-      let won = false;
-
-      if (next > first && choice === 'more') won = true;
-      if (next < first && choice === 'less') won = true;
-
-      if (next === first) won = false;
-
-      if (won) {
-        const win = higherLowerState.bet * 2;
-        chips += win;
-        saveData();
-        setResult('higherLowerResult', `Первое число было ${first}, выпало ${next}.\n✅ Ты угадал и получил ${formatNumber(win)} фишек!`);
+      if (selectedForEvict.has(index)) {
+        selectedForEvict.delete(index);
       } else {
-        setResult('higherLowerResult', `Первое число было ${first}, выпало ${next}.\n❌ Ты проиграл ${formatNumber(higherLowerState.bet)} фишек.`);
+        selectedForEvict.add(index);
       }
 
-      higherLowerState.active = false;
-      higherLowerState.bet = 0;
-      higherLowerState.firstNumber = null;
+      updateEvictUI();
+      renderBuilding();
     }
 
-    async function spinJackpot() {
-      const bet = Number(document.getElementById('jackpotBet').value);
-      const error = validateBet(bet);
-      if (error) {
-        setResult('jackpotResult', error);
+    function toggleEvictMode() {
+      evictMode = !evictMode;
+
+      if (!evictMode) {
+        selectedForEvict.clear();
+      }
+
+      updateEvictUI();
+      renderBuilding();
+    }
+
+    function updateEvictUI() {
+      if (evictMode) {
+        evictBtn.classList.add("active");
+        evictBtn.textContent = "🚪 Режим выселения: ВКЛ";
+        applyEvictBtn.classList.remove("hidden");
+      } else {
+        evictBtn.classList.remove("active");
+        evictBtn.textContent = "🚪 Выселить";
+        applyEvictBtn.classList.add("hidden");
+      }
+
+      applyEvictBtn.textContent = selectedForEvict.size > 0
+        ? `✅ Применить выселение (${selectedForEvict.size})`
+        : "✅ Применить выселение";
+
+      selectedCountInfo.textContent = `Выбрано для выселения: ${selectedForEvict.size}`;
+    }
+
+    function applyEviction() {
+      if (selectedForEvict.size === 0) {
+        alert("Сначала выбери хотя бы одну карточку для выселения.");
         return;
       }
 
-      chips -= bet;
-      saveData();
+      selectedForEvict.forEach(index => {
+        currentItems[index].evicted = true;
+      });
 
-      const symbols = ["🍒", "🍊", "🍇", "🍑", "🍋", "🍉", "⭐", "💎"];
-      const slot1 = document.getElementById('slot1');
-      const slot2 = document.getElementById('slot2');
-      const slot3 = document.getElementById('slot3');
-
-      for (let i = 0; i < 14; i++) {
-        slot1.textContent = symbols[randomInt(0, symbols.length - 1)];
-        slot2.textContent = symbols[randomInt(0, symbols.length - 1)];
-        slot3.textContent = symbols[randomInt(0, symbols.length - 1)];
-        await delay(90);
-      }
-
-      const result = [
-        symbols[randomInt(0, symbols.length - 1)],
-        symbols[randomInt(0, symbols.length - 1)],
-        symbols[randomInt(0, symbols.length - 1)]
-      ];
-
-      slot1.textContent = result[0];
-      slot2.textContent = result[1];
-      slot3.textContent = result[2];
-
-      const combo = result.join('');
-      let multiplier = 0;
-
-      if (combo === "🍒🍒🍒") multiplier = 100;
-      else if (combo === "🍊🍊🍊") multiplier = 20;
-      else if (combo === "🍇🍇🍇") multiplier = 5;
-      else if (combo === "🍑🍑🍑") multiplier = 2;
-
-      if (multiplier > 0) {
-        const win = bet * multiplier;
-        chips += win;
-        saveData();
-        setResult('jackpotResult', `Выпало: ${combo}\n🎉 Джекпот! Множитель x${multiplier}.\nТы получил ${formatNumber(win)} фишек.`);
-      } else {
-        setResult('jackpotResult', `Выпало: ${combo}\n😢 Не повезло. Ты проиграл ${formatNumber(bet)} фишек.`);
-      }
+      selectedForEvict.clear();
+      evictMode = false;
+      updateEvictUI();
+      renderBuilding();
     }
 
-    updateBalances();
+    function resetBoard() {
+      currentItems.forEach(item => item.evicted = false);
+      selectedForEvict.clear();
+      evictMode = false;
+      updateEvictUI();
+      renderBuilding();
+    }
+
+    function openLeaderModal() {
+      leaderModal.style.display = "flex";
+    }
+
+    function closeLeaderModal() {
+      leaderModal.style.display = "none";
+    }
+
+    function renderLeaderOptions() {
+      leaderGrid.innerHTML = "";
+
+      currentItems.forEach((item, index) => {
+        const option = document.createElement("div");
+        option.className = "leader-option";
+        option.innerHTML = `
+          <div class="leader-option-name">${item.name}</div>
+          <div class="leader-option-desc">${item.desc}</div>
+        `;
+        option.onclick = () => chooseLeader(index);
+        leaderGrid.appendChild(option);
+      });
+    }
+
+    function chooseLeader(index) {
+      leaderIndex = index;
+      const item = currentItems[index];
+
+      leaderName.textContent = item.name;
+      leaderDesc.textContent = item.desc;
+
+      bottomHeroName.textContent = item.name;
+      bottomHeroDesc.textContent = item.desc;
+
+      closeLeaderModal();
+    }
+
+    function resetLeaderUI() {
+      leaderName.textContent = "Не выбран";
+      leaderDesc.textContent = "Выбери одного из 25 персонажей.";
+      bottomHeroName.textContent = "Глава не выбран";
+      bottomHeroDesc.innerHTML = 'Нажми справа кнопку <b>“Выбрать главу”</b>, чтобы назначить своего персонажа.';
+    }
+
+    window.onclick = function(e) {
+      if (e.target === leaderModal) {
+        closeLeaderModal();
+      }
+    };
   </script>
 </body>
 </html>
