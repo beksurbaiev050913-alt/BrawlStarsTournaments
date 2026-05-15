@@ -1,140 +1,238 @@
+# Neon Game Download Landing Page
+
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Vegas_Kazik</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kosmos Soft</title>
 
 <style>
-*{box-sizing:border-box;font-family:Segoe UI,sans-serif}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
 
 body{
-  margin:0;
-  background:radial-gradient(circle at top,#2a0040,#000);
-  color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+    color:white;
+    background:black;
 }
 
-/* Шапка */
-header{
-  text-align:center;
-  padding:20px;
-  font-size:30px;
-  font-weight:900;
-  color:#ff4dff;
-  text-shadow:0 0 15px #ff4dff;
+.background{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:linear-gradient(-45deg,#0f0f0f,#1a0033,#001133,#330000,#111);
+    background-size:400% 400%;
+    animation:gradient 12s ease infinite;
+    z-index:-1;
 }
 
-#balance{text-align:center;font-size:20px;margin-bottom:10px}
-
-/* Меню */
-nav{
-  display:flex;
-  justify-content:center;
-  gap:15px;
-  background:#140020;
-  padding:10px;
-}
-nav button{
-  border:2px solid #00f7ff;
-  background:none;
-  color:#fff;
-  padding:10px 18px;
-  border-radius:25px;
-  cursor:pointer;
+@keyframes gradient{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
-/* Кейсы (как музей) */
-.cases{
-  display:flex;
-  gap:25px;
-  justify-content:center;
-  flex-wrap:wrap;
-  padding:20px;
-}
-.case{
-  width:220px;
-  padding:20px;
-  border-radius:25px;
-  text-align:center;
-  opacity:0.4;
-}
-.case .emoji{font-size:42px}
-
-.bronze{background:linear-gradient(145deg,#8b5a2b,#c68642)}
-.silverCase{background:linear-gradient(145deg,#9aa7b2,#4facfe)}
-.gold{background:linear-gradient(145deg,#ffd700,#ff9900);color:#000}
-.spring{background:linear-gradient(145deg,#2ecc71,#a3ffcb);color:#000}
-
-/* 🔥 ГЛАВНАЯ НАДПИСЬ */
-.pause{
-  text-align:center;
-  margin:30px;
-  font-size:26px;
-  font-weight:bold;
-  color:red;
-  animation:blink 1.2s infinite;
-  text-shadow:0 0 10px red, 0 0 25px red;
+.container{
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    padding:30px;
 }
 
-@keyframes blink{
-  0%{opacity:1}
-  50%{opacity:0.2}
-  100%{opacity:1}
+.logo{
+    font-size:55px;
+    font-weight:bold;
+    margin-bottom:10px;
+    text-shadow:0 0 20px red;
 }
 
-/* затемнение */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  pointer-events:none;
+.subtitle{
+    color:#bdbdbd;
+    margin-bottom:40px;
+    text-align:center;
+    max-width:700px;
+}
+
+.main-buttons{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+button{
+    padding:16px 35px;
+    border:none;
+    border-radius:16px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+    background:#111;
+    color:white;
+    box-shadow:0 0 15px rgba(255,0,0,0.4);
+}
+
+button:hover{
+    transform:scale(1.05);
+    background:red;
+    box-shadow:0 0 25px red;
+}
+
+.panel{
+    display:none;
+    margin-top:35px;
+    width:90%;
+    max-width:800px;
+    background:rgba(0,0,0,0.7);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:25px;
+    padding:30px;
+    backdrop-filter:blur(10px);
+}
+
+.panel h2{
+    margin-bottom:15px;
+    color:#ff4040;
+}
+
+.downloads{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:20px;
+}
+
+.download-btn{
+    width:100%;
+}
+
+.certificate{
+    background:#111;
+    border-radius:20px;
+    padding:20px;
+    margin-top:15px;
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+.telegram{
+    font-size:24px;
+    margin-top:15px;
+    color:#00bfff;
+}
+
+.footer{
+    margin-top:50px;
+    opacity:0.5;
+    font-size:14px;
 }
 </style>
 </head>
-
 <body>
 
-<header>Бека депает — и ты депай!</header>
+<div class="background"></div>
 
-<div id="balance">
-Баланс: <span>—</span> CC
+<div class="container">
+
+<div class="logo">KOSMOS SOFT</div>
+
+<div class="subtitle">
+If our model does not support your software, the standard Black Russia will still run.
 </div>
 
-<nav>
-  <button>Кейсы</button>
-  <button>Мои герои</button>
-  <button>Black Pass</button>
-</nav>
-
-<!-- 🔥 НАДПИСЬ -->
-<div class="pause">
-Игра идет на долгий тех.перерыв...<br>
-Мы готовим глобальное обновление 🔥
+<div class="main-buttons">
+    <button onclick="showPanel('soft')">Our Soft</button>
+    <button onclick="showPanel('cert')">Our Certificate or Soft</button>
+    <button onclick="showPanel('support')">Tech Support</button>
 </div>
 
-<!-- Кейсы (просто как память) -->
-<div class="cases">
-  <div class="case bronze">
-    <div class="emoji">📦</div>
-    <h3>Новичок</h3>
-  </div>
+<div id="soft" class="panel">
+    <h2>Our Soft</h2>
 
-  <div class="case silverCase">
-    <div class="emoji">🧊</div>
-    <h3>Стандарт</h3>
-  </div>
+    <div class="downloads">
 
-  <div class="case gold">
-    <div class="emoji">💎</div>
-    <h3>Дубай</h3>
-  </div>
+        <!-- ВАЖНО:
+        Вместо # вставь свою ссылку.
+        Можно:
+        1. Ссылку на APK
+        2. Ссылку на Google Play
+        -->
 
-  <div class="case spring">
-    <div class="emoji">🌸</div>
-    <h3>Весенний</h3>
-  </div>
+        <a href="https://apkpure.net/black-russia-launcher/com.launcher.brgame/download" target="_blank">
+            <button class="download-btn">
+                Download Our Soft in Black Russia
+            </button>
+        </a>
+
+        <button class="download-btn" onclick="showError()">
+                Download Our Soft in Brawl Stars
+            </button>
+
+        <button class="download-btn" onclick="showError()">
+                Download Our Soft in Matreshka RP
+            </button>
+
+    </div>
 </div>
 
-<div class="overlay"></div>
+<div id="cert" class="panel">
+    <h2>Certificates</h2>
+
+    <div class="certificate">
+        <h3>Security Test Certificate</h3>
+        <p>
+        Demo certificate design for showcase purposes.
+        </p>
+    </div>
+
+    <div class="certificate">
+        <h3>Software Quality Certificate</h3>
+        <p>
+        Demo award layout used for visual presentation.
+        </p>
+    </div>
+</div>
+
+<div id="support" class="panel">
+    <h2>Tech Support</h2>
+
+    <div class="telegram">
+        Telegram: @KosmosHardoxxx
+    </div>
+</div>
+
+<div class="footer">
+KOSMOS SOFT © 2026
+</div>
+
+</div>
+
+<script>
+function showError(){
+    alert('ERROR 0x887A0001 — Loader is temporarily unavailable');
+}
+
+function showPanel(id){
+    let panels = document.querySelectorAll('.panel');
+
+    panels.forEach(panel => {
+        panel.style.display = 'none';
+    });
+
+    document.getElementById(id).style.display = 'block';
+}
+</script>
 
 </body>
 </html>
+
